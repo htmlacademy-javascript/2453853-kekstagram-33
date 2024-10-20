@@ -1,6 +1,4 @@
-const example20 = 'Привет, здесь 20 сим';
 const example18 = 'Привет, здесь 18с.';
-const example10 = 'Привет, 10';
 const example7 = 'Привет!';
 
 
@@ -72,7 +70,7 @@ function funAdditional(a) {
     return console.log(parseFloat(a));
   }
   return console.log('NaN'); */
-  let b = a.replaceAll(' ', '');
+  const b = a.replaceAll(' ', '');
   return (!Number.isNaN(a)) ? console.log(b, parseFloat(b)) : console.log('NaN');
 }
 funAdditional('2023 год');
