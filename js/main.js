@@ -24,6 +24,16 @@ const MESSAGES = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 
+// Возможные описания фотографий
+const MESSAGES = [
+  'Всё отлично!',
+  'В целом всё неплохо. Но не всё.',
+  'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
+  'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
+  'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
+  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
+];
+
 const getRandomInteger = (a, b) => {
   const lower = Math.ceil(Math.min(a, b));
   const upper = Math.floor(Math.max(a, b));
@@ -36,12 +46,15 @@ const getRandomInteger = (a, b) => {
 // comments, массив объектов — список комментариев, оставленных другими пользователями к этой фотографии. Количество комментариев к каждой фотографии — случайное число от 0 до 30
 
 const createComment = () => {
+  const randomIdIndex = getRandomInteger(1, 25);
+  const randomUrl = getRandomInteger(1, 25);
   const randomNameIndex = getRandomInteger(0, NAMES.length - 1);
   const randomMessageIndex = getRandomInteger(0, MESSAGES.length - 1);
 
   return {
-    id: '',
-    avatar: '',
+    id: randomIdIndex,
+    url: randomUrl,
+    avatar: 'photos/' + randomIdIndex + '.jpg',
     message: MESSAGES[randomMessageIndex],
     name: NAMES[randomNameIndex],
   };
