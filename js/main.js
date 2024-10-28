@@ -1,3 +1,4 @@
-import { createDataPhoto, PHOTOS_MAX } from './data.js';
+import { PHOTOS_MAX } from './constants.js';
+import { createDataPhoto } from './data.js';
 
 createDataPhoto(PHOTOS_MAX);
