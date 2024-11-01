@@ -1,18 +1,18 @@
 // создание уникального идентификатора ID, искользуем корирование, замыкаемся на счетчики и вызываем эту функцию
-// const getSequentNumber = () => {
-//   let lastNumber = 0;
-//   return function () {
-//     lastNumber++;
-//     return lastNumber;
-//   };
-// };
-const createIdGenerator = () => {
-  let currentId = 0;
-  return () => ++currentId;
+const getSequentNumber = () => {
+  let lastNumber = 0;
+  return function () {
+    lastNumber++;
+    return lastNumber;
+  };
 };
+// const createIdGenerator = () => {
+//   let currentId = 0;
+//   return () => ++currentId;
+// };
 
-const createId = createIdGenerator()
-createId()
+// const createId = createIdGenerator()
+// createId()
 
 // фукция генерации случайного числа
 const getRandomNumber = (min, max) => {
@@ -25,7 +25,7 @@ const getRandomNumber = (min, max) => {
 const getRandomElement = (elements) =>
   elements[getRandomNumber(elements.length - 1, 0)];
 
-// const getPhotoId = getSequentNumber();
-// const getCommentId = getSequentNumber();
+const getPhotoId = getSequentNumber();
+const getCommentId = getSequentNumber();
 
 export { getRandomNumber, getRandomElement, getPhotoId, getCommentId };
