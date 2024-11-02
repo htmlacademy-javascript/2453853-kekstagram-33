@@ -1,7 +1,8 @@
 const thumbnailTemplate = document.querySelector('#picture').content.querySelector('.picture');
-const listPictures = document.querySelector('.pictures');
+export const listPictures = document.querySelector('.pictures');
 
 const createThumbnail = (dataPhoto) => {
+  // делаем глубокое клонирование каждой миниатюры
   const thumbnail = thumbnailTemplate.cloneNode(true);
 
   const pictureThumbnail = thumbnail.querySelector('.picture__img');
@@ -21,4 +22,3 @@ export const renderThumbnail = (dataPhotos) => {
     listPictures.append(newThumbnail);
   });
 };
-
