@@ -2,9 +2,9 @@ import { isEscape } from './util';
 import { listPictures } from './renderPictures';
 
 const bigPictureOpenElement = document.querySelector('.big-picture');
-const thumblePictureElement = document.querySelector('.picture__img');
+// const thumblePictureElement = document.querySelector('.picture__img');
 const bigPictureCloseElement = document.querySelector('.big-picture__cancel');
-const bigPictureImage = bigPictureOpenElement.querySelector('.big-picture__img');
+// const bigPictureImage = bigPictureOpenElement.querySelector('.big-picture__img');
 // const bigPictureLikesCount = bigPictureOpenElement.querySelector('.likes-count');
 // const bigPictureCommentCount = bigPictureOpenElement.querySelector('.social__comment-shown-count');
 // const bigPictureCommentTotalCount = bigPictureOpenElement.querySelector('.social__comment-total-count');
@@ -24,16 +24,16 @@ const onDocumentKeydown = (evt) => {
 //   bigPictureOpenElement.innerHTML = '';
 // };
 
-function openBigPicture () {
+function openBigPicture() {
   bigPictureOpenElement.classList.remove('hidden');
   // clearBigPictureList ();
   // bigPictureImage.src = thumblePictureElement.src;
   // bigPictureLikesCount.textContent = dataPhoto.comments;
-  console.log(thumblePictureElement.src);
+  // console.log(thumblePictureElement.src);
   document.addEventListener('keydown', onDocumentKeydown);
 }
 
-function closeBigPicture () {
+function closeBigPicture() {
   bigPictureCloseElement.addEventListener('click', () => {
     bigPictureOpenElement.classList.add('hidden');
   });
