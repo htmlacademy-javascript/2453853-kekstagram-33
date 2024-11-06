@@ -28,4 +28,6 @@ const getRandomElement = (elements) =>
 const getPhotoId = getSequentNumber();
 const getCommentId = getSequentNumber();
 
-export { getRandomNumber, getRandomElement, getPhotoId, getCommentId };
+const isEscape = (evt) => evt.key === 'Escape';
+
+export { getRandomNumber, getRandomElement, getPhotoId, getCommentId, isEscape };
