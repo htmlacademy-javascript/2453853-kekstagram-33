@@ -7,20 +7,18 @@ const pictureCloseButton = bigPicture.querySelector('.big-picture__cancel');
 const likesCount = bigPicture.querySelector('.likes-count');
 const pictureDescription = bigPicture.querySelector('.social__caption');
 const socialComments = bigPicture.querySelector('.social__comments');
-// const peopleAvatar = bigPicture.querySelector('.social__picture');
-// const peopleMessage = bigPicture.querySelector('.social__text');
 
 const commentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
 
 const commentTotalCount = document.querySelector('.social__comment-shown-count');
 
 // Создание комментария к фотографиям
-const createComments = ({ url, name, message }) => {
+const createComments = ({ avatar, name, message }) => {
   // делаем глубокое клонирование каждого комментария
   const commentsElement = commentTemplate.cloneNode(true);
-  commentsElement.querySelector('.social__picture').src = url;
-  commentsElement.querySelector('.social__text').alt = name;
-  commentsElement.textContent = message;
+  commentsElement.querySelector('.social__picture').src = avatar;
+  commentsElement.querySelector('.social__picture').alt = name;
+  commentsElement.querySelector('.social__text').textContent = message;
   return commentsElement;
 };
 
