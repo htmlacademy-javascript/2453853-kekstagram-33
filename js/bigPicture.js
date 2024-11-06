@@ -1,49 +1,66 @@
 import { isEscape } from './util';
-import { listPictures } from './renderPictures';
 
-const bigPictureOpenElement = document.querySelector('.big-picture');
-const thumblePictureElement = document.querySelector('.picture__img');
-const bigPictureCloseElement = document.querySelector('.big-picture__cancel');
-const bigPictureImage = bigPictureOpenElement.querySelector('.big-picture__img');
-// const bigPictureLikesCount = bigPictureOpenElement.querySelector('.likes-count');
-// const bigPictureCommentCount = bigPictureOpenElement.querySelector('.social__comment-shown-count');
-// const bigPictureCommentTotalCount = bigPictureOpenElement.querySelector('.social__comment-total-count');
-// const bigPictureSocialComments = bigPictureOpenElement.querySelector('.social__comments');
-// const bigPictureSocialCaption = bigPictureOpenElement.querySelector('.social__caption');
-// const bigPictureSocialCommentCount = bigPictureOpenElement.querySelector('.social__comment-count');
-// const bigPictureCommentsLoader = bigPictureOpenElement.querySelector('.comments-loader');
+const body = document.querySelector('body');
+const bigPicture = document.querySelector('.big-picture');
+const bigPictureImage = bigPicture.querySelector('.big-picture__img img');
+const pictureCloseButton = bigPicture.querySelector('.big-picture__cancel');
+const likesCount = bigPicture.querySelector('.likes-count');
+const pictureDescription = bigPicture.querySelector('.social__caption');
+const socialComments = bigPicture.querySelector('.social__comments');
+// const peopleAvatar = bigPicture.querySelector('.social__picture');
+// const peopleMessage = bigPicture.querySelector('.social__text');
 
-const onDocumentKeydown = (evt) => {
+const commentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
+
+const commentTotalCount = document.querySelector('.social__comment-shown-count');
+
+// Создание комментария к фотографиям
+const createComments = ({ url, name, message }) => {
+  // делаем глубокое клонирование каждого комментария
+  const commentsElement = commentTemplate.cloneNode(true);
+  commentsElement.querySelector('.social__picture').src = url;
+  commentsElement.querySelector('.social__text').alt = name;
+  commentsElement.textContent = message;
+  return commentsElement;
+};
+
+// рендер комментариев к фотографиям
+const renderComments = (comments) => {
+  const commentsListFragment = document.createDocumentFragment();
+
+  comments.forEach((comment) => {
+    const commentElement = createComments(comment);
+    commentsListFragment.append(commentElement);
+  });
+
+  socialComments.textContent = '';
+  socialComments.append(commentsListFragment);
+};
+
+export const openBigPicture = (dataPhoto) => {
+  bigPicture.classList.remove('hidden');
+
+  bigPictureImage.src = dataPhoto.url;
+  likesCount.textContent = dataPhoto.likes;
+  pictureDescription.innerHTML = dataPhoto.description;
+  commentTotalCount.textContent = dataPhoto.comments.length;
+  renderComments(dataPhoto.comments);
+  body.classList.add('modal-open');
+  document.addEventListener('keydown', onDocumentKeydown);
+};
+
+const closeBigPicture = () => {
+  bigPicture.classList.add('hidden');
+  body.classList.remove('modal-open');
+
+  document.removeEventListener('keydown', onDocumentKeydown);
+};
+
+function onDocumentKeydown(evt){
   if (isEscape(evt)) {
     evt.preventDefault();
     closeBigPicture();
   }
-};
-
-// const clearBigPictureList = () => {
-//   bigPictureOpenElement.innerHTML = '';
-// };
-
-function openBigPicture () {
-  bigPictureOpenElement.classList.remove('hidden');
-  // clearBigPictureList ();
-  // bigPictureImage.src = thumblePictureElement.src;
-  // bigPictureLikesCount.textContent = dataPhoto.comments;
-  console.log(thumblePictureElement.src);
-  document.addEventListener('keydown', onDocumentKeydown);
 }
 
-function closeBigPicture () {
-  bigPictureCloseElement.addEventListener('click', () => {
-    bigPictureOpenElement.classList.add('hidden');
-  });
-}
-
-listPictures.addEventListener('click', () => {
-  openBigPicture();
-});
-
-bigPictureCloseElement.addEventListener('click', () => {
-  closeBigPicture();
-});
-
+pictureCloseButton.addEventListener('click', closeBigPicture);
