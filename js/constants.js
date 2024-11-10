@@ -4,6 +4,7 @@ export const PHOTOS_MAX = 25;
 export const LIKES_MIN = 15;
 export const LIKES_MAX = 200;
 export const COMMENTS_MIN = 0;
+export const COMMENTS_VISIBLE = 5;
 export const COMMENTS_MAX = 30;
 export const AVATAR_MIN = 1;
 export const AVATAR_MAX = 6;
