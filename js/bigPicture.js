@@ -54,7 +54,7 @@ const showVisibleComment = () => {
 commentsLoader.addEventListener('click', showVisibleComment);
 
 // Функция для открытия большого окна
-export const openBigPicture = (dataPhoto) => {
+const openBigPicture = (dataPhoto) => {
   bigPicture.classList.remove('hidden');
   socialComments.textContent = '';
   countVisibleComments = COMMENTS_MIN;
@@ -88,3 +88,5 @@ function onDocumentKeydown(evt) {
 }
 
 pictureCloseButton.addEventListener('click', closeBigPicture);
+
+export { openBigPicture };

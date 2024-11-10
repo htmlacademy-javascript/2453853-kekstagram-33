@@ -30,11 +30,3 @@ const renderPhoto = (similarPhoto, pictureClickHandler) => {
 };
 
 export { renderPhoto };
-/*
-  photoElement.querySelector('.picture__comments');
-  const pictureThumbnailLikes = photoElement.querySelector('.picture__likes');
-  pictureThumbnail.src = dataPhoto.url;
-  pictureThumbnailComments.textContent = dataPhoto.comments.length;
-  pictureThumbnailLikes.textContent = dataPhoto.likes;
-  return photoElement;
-*/
