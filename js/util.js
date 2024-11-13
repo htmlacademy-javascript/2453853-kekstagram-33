@@ -6,15 +6,7 @@ const getSequentNumber = () => {
     return lastNumber;
   };
 };
-// const createIdGenerator = () => {
-//   let currentId = 0;
-//   return () => ++currentId;
-// };
 
-// const createId = createIdGenerator()
-// createId()
-
-// фукция генерации случайного числа
 const getRandomNumber = (min, max) => {
   min = Math.ceil(min);
   max = Math.floor(max);

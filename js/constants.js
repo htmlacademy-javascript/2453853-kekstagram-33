@@ -1,15 +1,16 @@
 // Основные магические числа
-export const PHOTOS_MIN = 1;
-export const PHOTOS_MAX = 25;
-export const LIKES_MIN = 15;
-export const LIKES_MAX = 200;
-export const COMMENTS_MIN = 0;
-export const COMMENTS_MAX = 30;
-export const AVATAR_MIN = 1;
-export const AVATAR_MAX = 6;
+const PHOTOS_MIN = 1;
+const PHOTOS_MAX = 25;
+const LIKES_MIN = 15;
+const LIKES_MAX = 200;
+const COMMENTS_MIN = 0;
+const COMMENTS_VISIBLE = 5;
+const COMMENTS_MAX = 30;
+const AVATAR_MIN = 1;
+const AVATAR_MAX = 6;
 
 // Возможные описания фотографий
-export const DESCRIPTIONS = [
+const DESCRIPTIONS = [
   'Закат над морем.',
   'Горный пейзаж.',
   'Семейный пикник.',
@@ -19,7 +20,7 @@ export const DESCRIPTIONS = [
 ];
 
 // Возможные сообщения для комментариев
-export const MESSAGES = [
+const MESSAGES = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
@@ -29,4 +30,6 @@ export const MESSAGES = [
 ];
 
 // Возможные имена для комментаторов
-export const NAMES = ['Артём', 'Ольга', 'Иван', 'Мария', 'Дмитрий', 'Анна', 'Елена', 'Сергей', 'Настя', 'Максим', 'Татьяна', 'Ирина'];
+const NAMES = ['Артём', 'Ольга', 'Иван', 'Мария', 'Дмитрий', 'Анна', 'Елена', 'Сергей', 'Настя', 'Максим', 'Татьяна', 'Ирина'];
+
+export { PHOTOS_MIN, PHOTOS_MAX, LIKES_MIN, LIKES_MAX, COMMENTS_MIN, COMMENTS_VISIBLE, COMMENTS_MAX, AVATAR_MIN, AVATAR_MAX, DESCRIPTIONS, MESSAGES, NAMES };

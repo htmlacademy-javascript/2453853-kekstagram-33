@@ -16,7 +16,7 @@ const createComments = () => {
 };
 
 //функция, которая создает описание 1-го фото
-export const createPhoto = () => ({
+const createPhoto = () => ({
   id: getPhotoId(),
   url: `photos/${getRandomNumber(PHOTOS_MIN, PHOTOS_MAX)}.jpg`,
   description: getRandomElement(DESCRIPTIONS),
@@ -28,4 +28,4 @@ export const createPhoto = () => ({
 const createDataPhoto = (amount) =>
   Array.from({ length: amount }, createPhoto);
 
-export { createDataPhoto };
+export { createPhoto, createDataPhoto };
