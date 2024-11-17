@@ -1,5 +1,6 @@
 import { isEscape } from './util';
 import { COMMENTS_MIN, COMMENTS_VISIBLE } from './constants';
+import {socialComments, renderComments} from './renderComments';
 
 const body = document.querySelector('body');
 const bigPicture = document.querySelector('.big-picture');
@@ -7,31 +8,10 @@ const bigPictureImage = bigPicture.querySelector('.big-picture__img img');
 const pictureCloseButton = bigPicture.querySelector('.big-picture__cancel');
 const likesCount = bigPicture.querySelector('.likes-count');
 const pictureDescription = bigPicture.querySelector('.social__caption');
-const socialComments = bigPicture.querySelector('.social__comments');
-const commentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
+
 const commentShownCount = document.querySelector('.social__comment-shown-count');
 const commentTotalCount = document.querySelector('.social__comment-total-count');
 const commentsLoader = bigPicture.querySelector('.comments-loader');
-
-// Функция создания комментарием к фотографии
-const createComments = ({ avatar, name, message }) => {
-  // делаем глубокое клонирование каждого комментария
-  const commentsElement = commentTemplate.cloneNode(true);
-  commentsElement.querySelector('.social__picture').src = avatar;
-  commentsElement.querySelector('.social__picture').alt = name;
-  commentsElement.querySelector('.social__text').textContent = message;
-  return commentsElement;
-};
-
-// Функция создания всех комментариев к большой фотографии
-const renderComments = (comments) => {
-  const commentsListFragment = document.createDocumentFragment();
-  comments.forEach((comment) => {
-    const commentElement = createComments(comment);
-    commentsListFragment.append(commentElement);
-  });
-  socialComments.append(commentsListFragment);
-};
 
 let totalCountComments;
 let countVisibleComments;
