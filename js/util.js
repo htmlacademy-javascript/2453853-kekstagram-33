@@ -22,4 +22,12 @@ const getCommentId = getSequentNumber();
 
 const isEscape = (evt) => evt.key === 'Escape';
 
-export { getRandomNumber, getRandomElement, getPhotoId, getCommentId, isEscape };
+// фукнция создания из строки массива элементов
+const getNormalizedStringArray = (string) => string
+  .toString() // Приводим к строке
+  .toLowerCase() // Приводим к нижнему регистру
+  .trim() // обрезка пробелов в начале и конце строки
+  .replace(/\s+/g, ' ') // заменяем символ запятой (\s+) на пробел
+  .split(' '); // разделяем на массив
+
+export { getRandomNumber, getRandomElement, getPhotoId, getCommentId, isEscape, getNormalizedStringArray };

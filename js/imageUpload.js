@@ -1,70 +1,57 @@
-import { isEscape } from './util';
-import {COMMENTS_LENGTH_MAX } from './constants';
+import { isEscape, getNormalizedStringArray } from './util';
+import { configureFormValidation } from './form-validation.js';
 
-const body = document.querySelector('body');
-const imgCloseButton = document.querySelector('.img-upload__cancel');
-const imgUploadInput = document.querySelector('.img-upload__input');
-const imgUploadOverlay = document.querySelector('.img-upload__overlay');
-const uploadTextDescription = document.querySelector('.text__description');
-const uploadTextHashtags = document.querySelector('.text__hashtags');
-
-// Функция для открытия окна загрузки
-const openImgUpload = () => {
-  imgUploadOverlay.classList.remove('hidden');
-  body.classList.add('modal-open');
-  document.addEventListener('keydown', onDocumentKeydown);
-};
-
-// Функция для закрытия окна загрузки
-const closeImgUpload = () => {
-  imgUploadOverlay.classList.add('hidden');
-  body.classList.remove('modal-open');
-
-  document.removeEventListener('keydown', onDocumentKeydown);
-};
+const bodyElement = document.querySelector('body');
+const uploadForm = document.querySelector('.img-upload__form');
+const uploadInputElement = uploadForm.querySelector('.img-upload__input');
+const imageEditionFormElement = uploadForm.querySelector('.img-upload__overlay');
+const imageEditingFormCloseElement = imageEditionFormElement.querySelector('.img-upload__cancel');
+const hashtagInputElement = imageEditionFormElement.querySelector('[name="hashtags"]');
+const descriptionElement = imageEditionFormElement.querySelector('[name="description"]');
 
 // Функция для закрытия окна загрузки клавишей Escape
 function onDocumentKeydown(evt) {
   if (isEscape(evt)) {
     evt.preventDefault();
-    imgUploadInput.value = '';
-    imgUploadOverlay.classList.add('hidden');
+    if (![hashtagInputElement, descriptionElement].includes(document.activeElement)) {
+      closeEditingImageForm();
+    }
   }
 }
 
-// открытие окна загрузки
-imgUploadInput.addEventListener('change', () => {
-  openImgUpload();
-});
+const { isValidForm, resetValidate } = configureFormValidation(uploadForm, hashtagInputElement, descriptionElement);
 
-// кнопка закрытия окна
-imgCloseButton.addEventListener('click', () => {
-  closeImgUpload();
-});
-
-// Валидация модулем Pristine
-const imgUploadForm = document.querySelector('.img-upload__form');
-
-const textValidor = new Pristine(imgUploadForm, {
-  classTo: 'img-upload__field-wrapper',
-  errorTextParent: 'img-upload__field-wrapper',
-  errorTextClass: 'img-upload__field-wrapper--error'
-});
-
-// Ограничение длины комментария
-function isValidLength(text) {
-  return text.length < COMMENTS_LENGTH_MAX;
-}
-
-textValidor.addValidator(uploadTextDescription, isValidLength, `Длина комментария больше ${COMMENTS_LENGTH_MAX} символов`);
-
-// валидация хештегов регулярным выражением
-const validValue = /^#[a-zа-яё0-9]{1,19}$/i;
-
-function isValidTextHashtag(hashtagText) {
-  if (validValue.test(hashtagText)) {
-    return hashtagText;
+// Проверка валидности формы
+uploadForm.addEventListener('submit', (evt) => {
+  if (isValidForm()) {
+    hashtagInputElement.value = getNormalizedStringArray(hashtagInputElement.value);
+    descriptionElement.value = descriptionElement.value.trim();
+    resetValidate();
+  } else {
+    evt.preventDefault();
   }
+});
+
+uploadInputElement.addEventListener('change', (evt) => {
+  if (evt.target.value) {
+    openEditionImageForm();
+  }
+});
+
+// Функция для открытия окна загрузки
+function openEditionImageForm() {
+  bodyElement.classList.add('modal-open');
+  document.addEventListener('keydown', onDocumentKeydown);
+  imageEditingFormCloseElement.addEventListener('click', closeEditingImageForm);
+  imageEditionFormElement.classList.remove('hidden');
 }
 
-textValidor.addValidator(uploadTextHashtags, isValidTextHashtag, 'Введён невалидный хэштег');
+// Функция для закрытия окна формы
+function closeEditingImageForm() {
+  bodyElement.classList.remove('modal-open');
+  imageEditionFormElement.classList.add('hidden');
+  document.removeEventListener('keydown', onDocumentKeydown);
+  uploadForm.reset(); // Сброс значений и состояния формы редактирования
+  resetValidate(); // Сброс ошибок в форме
+  uploadInputElement.value = ''; // Сброс значений поля выбора файла
+}

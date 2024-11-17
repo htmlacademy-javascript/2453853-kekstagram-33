@@ -9,6 +9,7 @@ const COMMENTS_MAX = 30;
 const COMMENTS_LENGTH_MAX = 140;
 const AVATAR_MIN = 1;
 const AVATAR_MAX = 6;
+const MAX_HASHTAGS = 3;
 
 // Возможные описания фотографий
 const DESCRIPTIONS = [
@@ -33,4 +34,4 @@ const MESSAGES = [
 // Возможные имена для комментаторов
 const NAMES = ['Артём', 'Ольга', 'Иван', 'Мария', 'Дмитрий', 'Анна', 'Елена', 'Сергей', 'Настя', 'Максим', 'Татьяна', 'Ирина'];
 
-export { PHOTOS_MIN, PHOTOS_MAX, LIKES_MIN, LIKES_MAX, COMMENTS_MIN, COMMENTS_VISIBLE, COMMENTS_MAX, COMMENTS_LENGTH_MAX, AVATAR_MIN, AVATAR_MAX, DESCRIPTIONS, MESSAGES, NAMES };
+export { PHOTOS_MIN, PHOTOS_MAX, LIKES_MIN, LIKES_MAX, COMMENTS_MIN, COMMENTS_VISIBLE, COMMENTS_MAX, COMMENTS_LENGTH_MAX, AVATAR_MIN, AVATAR_MAX, DESCRIPTIONS, MESSAGES, NAMES, MAX_HASHTAGS };
