@@ -84,7 +84,7 @@ function configureFormValidation(uploadForm, hashtagInput, descriptionInput) {
   textValidator.addValidator(hashtagInput, isValidTextHashtag, getErrorSyntaxMessage);
   textValidator.addValidator(hashtagInput, validateHashtagCount, errorMessage.HASHTAG_COUNT);
   textValidator.addValidator(hashtagInput, validateHashtagDuplicate, errorMessage.DUPLICATE_HASHTAGS);
-  textValidator.addValidator(descriptionInput, validateDescriptionLength, errorMessage.COMMENTS_LENGTH_MAX);
+  textValidator.addValidator(descriptionInput, validateDescriptionLength, errorMessage.MAX_LENGTH_COMMENTS);
 
   return {
     isValidForm: () => textValidator.validate(), // Проверка валидности формы
