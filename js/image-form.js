@@ -1,5 +1,7 @@
 import { isEscape, getNormalizedStringArray } from './util';
 import { configureFormValidation } from './form-validation.js';
+import {changeImageScale, imageUploadPreview} from './image-scale.js';
+import {SCALE_DEFAULT, SCALE_MAX} from './constants.js';
 
 const bodyElement = document.querySelector('body');
 const uploadForm = document.querySelector('.img-upload__form');
@@ -40,10 +42,12 @@ uploadInputElement.addEventListener('change', (evt) => {
 
 // Функция для открытия окна загрузки
 function openEditionImageForm() {
+  imageEditionFormElement.classList.remove('hidden');
   bodyElement.classList.add('modal-open');
+  changeImageScale(SCALE_MAX);
+  imageUploadPreview.style.transform = `scale(${SCALE_DEFAULT})`;
   document.addEventListener('keydown', onDocumentKeydown);
   imageEditingFormCloseElement.addEventListener('click', closeEditingImageForm);
-  imageEditionFormElement.classList.remove('hidden');
 }
 
 // Функция для закрытия окна формы
