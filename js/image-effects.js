@@ -1,26 +1,66 @@
-import { imageUploadPreview} from './image-scale.js';
-import {SLIDER_INITIAL_MIN, SLIDER_INITIAL_STEP, SLIDER_INITIAL_MAX} from './constants.js';
+import { imageUploadPreview } from './image-scale.js';
+import { SLIDER_INITIAL_MIN, SLIDER_INITIAL_STEP, SLIDER_INITIAL_MAX } from './constants.js';
 
 const effectSliderContainer = document.querySelector('.img-upload__effect-level');
 const levelEffectInput = effectSliderContainer.querySelector('.effect-level__value');
 const effectSlider = effectSliderContainer.querySelector('.effect-level__slider');
 const effectsList = effectSliderContainer.querySelector('.effects__list');
+const effectOriginal = document.querySelector('#effect-none');
+// const effectsRadioInputs = document.querySelectorAll('.effects__radio:not(#effect-none)');
+
+/*
+effectSlider.style.display = 'none';
+
+noUiSlider.create(effectSlider, {
+  range: {
+    min: 0,
+    max: 1,
+  },
+  start: 1,
+  step: 0.1,
+  connect: 'lower'
+});
+
+for (const effectInput of effectsRadioInputs) {
+  effectInput.addEventListener('change', function () {
+    effectSlider.style.display = 'block';
+    effectSlider.noUiSlider.updateOptions({
+      range: {
+        min: parseFloat(this.dataset.min),
+        max: parseFloat(this.dataset.max)
+      },
+      start: parseFloat(this.dataset.max),
+      step: parseFloat(this.dataset.step)
+      // format: {
+      //   to: (value) => value.toFixed(1),
+      //   from: (value) => parseFloat(value)
+      // } Вопрос, нужно ли данное приведение?
+    });
+
+
+    effectSlider.noUiSlider.on('update', () => {
+      imageUploadPreview.style.filter = `${effectInput.dataset.effect}(${effectSlider.noUiSlider.get()}${effectInput.dataset.measure})`;
+      levelEffectInput.value = effectSlider.noUiSlider.get();
+    });
+  });
+}
+*/
 
 const EffectConfig = {
   chrome: {
-    style: 'grayscale', unit: '', sliderOptions: { min: 0, max: 1, step: 0.1},
+    style: 'grayscale', unit: '', sliderOptions: { min: 0, max: 1, step: 0.1 },
   },
   sepia: {
-    style: 'sepia', unit: '', sliderOptions: { min: 0, max: 1, step: 0.1},
+    style: 'sepia', unit: '', sliderOptions: { min: 0, max: 1, step: 0.1 },
   },
   marvin: {
-    style: 'invert', unit: '%', sliderOptions: { min: 0, max: 100, step: 1},
+    style: 'invert', unit: '%', sliderOptions: { min: 0, max: 100, step: 1 },
   },
   phobos: {
-    style: 'blur', unit: 'px', sliderOptions: { min: 0, max: 3, step: 0.1},
+    style: 'blur', unit: 'px', sliderOptions: { min: 0, max: 3, step: 0.1 },
   },
   heat: {
-    style: 'brightness', unit: '', sliderOptions: { min: 1, max: 3, step: 0.1},
+    style: 'brightness', unit: '', sliderOptions: { min: 1, max: 3, step: 0.1 },
   }
 };
 
@@ -40,14 +80,14 @@ const initialSliderOptions = {
 };
 
 // Функция переключения эффектов, приведение к начальному уровню
-function resetEffect () {
+function resetEffect() {
   levelEffectInput.value = 0;
   imageUploadPreview.style.filter = null;
   effectSliderContainer.classList.add('hidden');
 }
 
 // Функция настройки слайдера для управления эффектом изображения
-function setEffect (style, unit, sliderOptions) {
+const setEffect = ({ style, unit, sliderOptions }) => {
   effectSlider.noUiSlider.updateOptions({
     range: {
       min: sliderOptions?.min, // используем optional chaining `?.` для безопасного обращения к свойству
@@ -59,35 +99,44 @@ function setEffect (style, unit, sliderOptions) {
 
   // Событие `update` вызывается каждый раз, когда пользователь перемещает ручку слайдера
   effectSlider.noUiSlider.on('update', () => {
-    const satutationValue = effectSlider.noUiSlider.get(); // получаем текущее значение слайдера
-    levelEffectInput.value = satutationValue;
-    imageUploadPreview.style.filter = `${style}(${satutationValue}${unit})`;
+    const saturationValue = effectSlider.noUiSlider.get(); // получаем текущее значение слайдера
+    levelEffectInput.value = saturationValue;
+    imageUploadPreview.style.filter = `${style}(${saturationValue}${unit})`;
   });
-}
+};
 
-function onEffectClick(evt) {
-  if(evt.target.value === 'none') {
+const onEffectClick = (evt) => {
+  if (evt.target.value === 'none') {
     resetEffect();
     return;
   }
 
-  const effectInput = evt.target.closest('.effect__radio');
+  const effectInput = evt.target.closest('.effects__radio');
   effectSliderContainer.classList.remove('hidden');
 
   if (effectInput) {
     const effectValue = effectInput.value;
     setEffect(EffectConfig[effectValue]);
   }
-}
+};
 
-function initializeEffectSlider () {
+const initializeEffectSlider = () => {
   effectSliderContainer.classList.add('hidden');
   effectsList.addEventListener('click', onEffectClick);
   noUiSlider.create(effectSlider, initialSliderOptions);
-}
+};
 
-function destroyEffectSlider() {
-  effectSlider.noUiSlider.destroy();
-}
+// initializeEffectSlider();
 
-export {initializeEffectSlider, destroyEffectSlider, resetEffect};
+// function destroyEffectSlider() {
+//   effectSlider.noUiSlider.destroy();
+// }
+
+/*
+effectOriginal.addEventListener('click', () => {
+  imageUploadPreview.style.filter = 'none';
+  effectSlider.style.display = 'none';
+  levelEffectInput.value = '';
+});
+*/
+export { initializeEffectSlider };
