@@ -6,10 +6,12 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="././vendor/nouislider/nouislider.css">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <!-- <script src="/js/functions.js" defer></script> -->
-  <script src="/vendor/pristine/pristine.min.js"></script>
-  <script src="/js/main.js" type="module" defer></script>
+  <script src="./js/main.js" type="module" defer></script>
+  <script src="././vendor/pristine/pristine.min.js"></script>
+  <script src="././vendor/nouislider/nouislider.js"></script>
   <title>Кекстаграм</title>
 </head>
 
@@ -35,7 +37,8 @@
       <section class="img-upload">
         <div class="img-upload__wrapper">
           <h2 class="img-upload__title  visually-hidden">Загрузка фотографии</h2>
-          <form class="img-upload__form"  method="post" enctype="multipart/form-data" action="https://32.javascript.htmlacademy.pro/kekstagram" id="upload-select-image" autocomplete="off">
+          <form class="img-upload__form" method="post" enctype="multipart/form-data"
+            action="https://32.javascript.htmlacademy.pro/kekstagram" id="upload-select-image" autocomplete="off">
 
             <!-- Изначальное состояние поля для загрузки изображения -->
             <fieldset class="img-upload__start">
@@ -128,13 +131,14 @@
                 <!-- Добавление хэш-тегов и комментария к изображению -->
                 <fieldset class="img-upload__text text">
                   <div class="img-upload__field-wrapper">
-                    <input class="text__hashtags" name="hashtags" placeholder="#ХэшТег" minlength="2" maxlength="20" required
-                    data-pristine-required-message="Обязательное поле"
-                    data-pristine-minlength-message="Минимальная длина 2 символа"
-                    data-pristine-maxlength-message="Максимальная длина 20 символов">
+                    <input class="text__hashtags" name="hashtags" placeholder="#ХэшТег" minlength="2" maxlength="20"
+                      required data-pristine-required-message="Обязательное поле"
+                      data-pristine-minlength-message="Минимальная длина 2 символа"
+                      data-pristine-maxlength-message="Максимальная длина 20 символов">
                   </div>
                   <div class="img-upload__field-wrapper">
-                    <textarea class="text__description" name="description" placeholder="Ваш комментарий..." maxlength="140"></textarea>
+                    <textarea class="text__description" name="description" placeholder="Ваш комментарий..."
+                      maxlength="140"></textarea>
                   </div>
                 </fieldset>
 
@@ -221,7 +225,7 @@
   <!-- Шаблон изображения случайного пользователя -->
   <template id="picture">
     <a href="#" class="picture">
-      <img class="picture__img" src="" width="182" height="182" alt="Случайная фотография" >
+      <img class="picture__img" src="" width="182" height="182" alt="Случайная фотография">
       <p class="picture__info">
         <span class="picture__comments"></span>
         <span class="picture__likes"></span>
@@ -229,15 +233,15 @@
     </a>
   </template>
 
-    <!-- Шаблон добавления комментариев -->
-    <template id="comment">
-      <ul class="social__comments">
-        <li class="social__comment">
-          <img class="social__picture" src="" alt="" width="35" height="35">
-          <p class="social__text"></p>
-        </li>
-      </ul>
-    </template>
+  <!-- Шаблон добавления комментариев -->
+  <template id="comment">
+    <ul class="social__comments">
+      <li class="social__comment">
+        <img class="social__picture" src="" alt="" width="35" height="35">
+        <p class="social__text"></p>
+      </li>
+    </ul>
+  </template>
 
   <!-- Сообщение с ошибкой загрузки изображения -->
   <template id="error">
