@@ -5,7 +5,7 @@ import { COMMENTS_LENGTH_MAX, MAX_HASHTAGS } from './constants.js';
 const hashtagRegex = /^#[a-zа-яё0-9]{1,19}$/i;
 
 // Сообщения о несоответствии хештегов и описания
-const errorMessage = {
+const ErrorMessage = {
   HASHTAG_COUNT: `Количество хэштегов не должно быть более ${MAX_HASHTAGS}`,
   DUPLICATE_HASHTAGS: 'Хэштеги не должны повторяться',
   MAX_LENGTH_COMMENTS: `Длина комментария не должна превышать ${COMMENTS_LENGTH_MAX}`
@@ -82,9 +82,9 @@ function configureFormValidation(uploadForm, hashtagInput, descriptionInput) {
   });
 
   textValidator.addValidator(hashtagInput, isValidTextHashtag, getErrorSyntaxMessage);
-  textValidator.addValidator(hashtagInput, validateHashtagCount, errorMessage.HASHTAG_COUNT);
-  textValidator.addValidator(hashtagInput, validateHashtagDuplicate, errorMessage.DUPLICATE_HASHTAGS);
-  textValidator.addValidator(descriptionInput, validateDescriptionLength, errorMessage.MAX_LENGTH_COMMENTS);
+  textValidator.addValidator(hashtagInput, validateHashtagCount, ErrorMessage.HASHTAG_COUNT);
+  textValidator.addValidator(hashtagInput, validateHashtagDuplicate, ErrorMessage.DUPLICATE_HASHTAGS);
+  textValidator.addValidator(descriptionInput, validateDescriptionLength, ErrorMessage.MAX_LENGTH_COMMENTS);
 
   return {
     isValidForm: () => textValidator.validate(), // Проверка валидности формы

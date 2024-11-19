@@ -1,70 +1,30 @@
 import { imageUploadPreview } from './image-scale.js';
-import { SLIDER_INITIAL_MIN, SLIDER_INITIAL_STEP, SLIDER_INITIAL_MAX } from './constants.js';
+import { SLIDER_INITIAL_MIN, SLIDER_INITIAL_STEP, SLIDER_INITIAL_MAX, SLIDER_MARVIN_MAX, SLIDER_MARVIN_STEP, SLIDER_PHOBOS_MAX, SLIDER_HEAT_MIN, SLIDER_HEAT_MAX } from './constants.js';
 
 const effectSliderContainer = document.querySelector('.img-upload__effect-level');
 const levelEffectInput = effectSliderContainer.querySelector('.effect-level__value');
 const effectSlider = effectSliderContainer.querySelector('.effect-level__slider');
-const effectsList = effectSliderContainer.querySelector('.effects__list');
-const effectOriginal = document.querySelector('#effect-none');
-// const effectsRadioInputs = document.querySelectorAll('.effects__radio:not(#effect-none)');
-
-/*
-effectSlider.style.display = 'none';
-
-noUiSlider.create(effectSlider, {
-  range: {
-    min: 0,
-    max: 1,
-  },
-  start: 1,
-  step: 0.1,
-  connect: 'lower'
-});
-
-for (const effectInput of effectsRadioInputs) {
-  effectInput.addEventListener('change', function () {
-    effectSlider.style.display = 'block';
-    effectSlider.noUiSlider.updateOptions({
-      range: {
-        min: parseFloat(this.dataset.min),
-        max: parseFloat(this.dataset.max)
-      },
-      start: parseFloat(this.dataset.max),
-      step: parseFloat(this.dataset.step)
-      // format: {
-      //   to: (value) => value.toFixed(1),
-      //   from: (value) => parseFloat(value)
-      // } Вопрос, нужно ли данное приведение?
-    });
-
-
-    effectSlider.noUiSlider.on('update', () => {
-      imageUploadPreview.style.filter = `${effectInput.dataset.effect}(${effectSlider.noUiSlider.get()}${effectInput.dataset.measure})`;
-      levelEffectInput.value = effectSlider.noUiSlider.get();
-    });
-  });
-}
-*/
+const effectsList = document.querySelector('.effects__list');
 
 const EffectConfig = {
   chrome: {
-    style: 'grayscale', unit: '', sliderOptions: { min: 0, max: 1, step: 0.1 },
+    style: 'grayscale', unit: '', sliderOptions: { min: SLIDER_INITIAL_MIN, max: SLIDER_INITIAL_MAX, step: SLIDER_INITIAL_STEP },
   },
   sepia: {
-    style: 'sepia', unit: '', sliderOptions: { min: 0, max: 1, step: 0.1 },
+    style: 'sepia', unit: '', sliderOptions: { min: SLIDER_INITIAL_MIN, max: SLIDER_INITIAL_MAX, step: SLIDER_INITIAL_STEP },
   },
   marvin: {
-    style: 'invert', unit: '%', sliderOptions: { min: 0, max: 100, step: 1 },
+    style: 'invert', unit: '%', sliderOptions: { min: SLIDER_INITIAL_MIN, max: SLIDER_MARVIN_MAX, step: SLIDER_MARVIN_STEP },
   },
   phobos: {
-    style: 'blur', unit: 'px', sliderOptions: { min: 0, max: 3, step: 0.1 },
+    style: 'blur', unit: 'px', sliderOptions: { min: SLIDER_INITIAL_MIN, max: SLIDER_PHOBOS_MAX, step: SLIDER_INITIAL_STEP },
   },
   heat: {
-    style: 'brightness', unit: '', sliderOptions: { min: 1, max: 3, step: 0.1 },
+    style: 'brightness', unit: '', sliderOptions: { min: SLIDER_HEAT_MIN, max: SLIDER_HEAT_MAX, step: SLIDER_INITIAL_STEP },
   }
 };
 
-// Конфигурация для инициализации слайдера
+// Начальная конфигукция слайдера
 const initialSliderOptions = {
   range: {
     min: SLIDER_INITIAL_MIN,
@@ -74,20 +34,20 @@ const initialSliderOptions = {
   step: SLIDER_INITIAL_STEP,
   connect: 'lower',
   format: {
-    to: (value) => Number.isInteger(value) ? value.toFixed(0) : value.toFixed(1),
+    to: (value) => Number.isInteger(value) ? value.toFixed(SLIDER_INITIAL_MIN) : value.toFixed(SLIDER_INITIAL_MAX),
     from: (value) => parseFloat(value),
   },
 };
 
-// Функция переключения эффектов, приведение к начальному уровню
+// Функция очистки от эффектов, приведение к начальному уровню
 function resetEffect() {
   levelEffectInput.value = 0;
   imageUploadPreview.style.filter = null;
-  effectSliderContainer.classList.add('hidden');
+  effectSliderContainer.classList.add('hidden'); // скрытие слайдера
 }
 
-// Функция настройки слайдера для управления эффектом изображения
-const setEffect = ({ style, unit, sliderOptions }) => {
+// Функция настройки слайдера под действием пользователя
+function setEffect ({ style, unit, sliderOptions }) {
   effectSlider.noUiSlider.updateOptions({
     range: {
       min: sliderOptions?.min, // используем optional chaining `?.` для безопасного обращения к свойству
@@ -103,40 +63,36 @@ const setEffect = ({ style, unit, sliderOptions }) => {
     levelEffectInput.value = saturationValue;
     imageUploadPreview.style.filter = `${style}(${saturationValue}${unit})`;
   });
-};
+}
 
-const onEffectClick = (evt) => {
+// Обработчик событий
+function onEffectClick(evt) {
+  // Если ничего не выбрали, слайдер останется в дефолтном состоянии
   if (evt.target.value === 'none') {
     resetEffect();
     return;
   }
 
+  // функция определения родительсткого класса эффекта
   const effectInput = evt.target.closest('.effects__radio');
   effectSliderContainer.classList.remove('hidden');
 
+  // родительский класс найден, то передаем значение эффекта с EffectConfig
   if (effectInput) {
     const effectValue = effectInput.value;
     setEffect(EffectConfig[effectValue]);
   }
-};
+}
 
-const initializeEffectSlider = () => {
+function initializeEffectSlider() {
   effectSliderContainer.classList.add('hidden');
   effectsList.addEventListener('click', onEffectClick);
   noUiSlider.create(effectSlider, initialSliderOptions);
-};
+}
 
-// initializeEffectSlider();
+// Функция очистки от слайдера
+function destroyEffectSlider() {
+  effectSlider.noUiSlider.destroy();
+}
 
-// function destroyEffectSlider() {
-//   effectSlider.noUiSlider.destroy();
-// }
-
-/*
-effectOriginal.addEventListener('click', () => {
-  imageUploadPreview.style.filter = 'none';
-  effectSlider.style.display = 'none';
-  levelEffectInput.value = '';
-});
-*/
-export { initializeEffectSlider };
+export { effectsList, initializeEffectSlider, destroyEffectSlider};

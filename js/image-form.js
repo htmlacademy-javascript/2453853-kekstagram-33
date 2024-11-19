@@ -2,7 +2,7 @@ import { isEscape, getNormalizedStringArray } from './util';
 import { configureFormValidation } from './form-validation.js';
 import { changeImageScale, imageUploadPreview } from './image-scale.js';
 import { SCALE_DEFAULT, SCALE_MAX } from './constants.js';
-// import { initializeEffectSlider } from './image-effects.js';
+import { effectsList, initializeEffectSlider, destroyEffectSlider } from './image-effects.js';
 
 const bodyElement = document.querySelector('body');
 const uploadForm = document.querySelector('.img-upload__form');
@@ -45,9 +45,9 @@ uploadInputElement.addEventListener('change', (evt) => {
 function openEditionImageForm() {
   imageEditionFormElement.classList.remove('hidden');
   bodyElement.classList.add('modal-open');
-  // initializeEffectSlider();
   changeImageScale(SCALE_MAX);
   imageUploadPreview.style.transform = `scale(${SCALE_DEFAULT})`;
+  effectsList.addEventListener('change', (initializeEffectSlider()));
   document.addEventListener('keydown', onDocumentKeydown);
   imageEditingFormCloseElement.addEventListener('click', closeEditingImageForm);
 }
@@ -60,4 +60,5 @@ function closeEditingImageForm() {
   uploadForm.reset(); // Сброс значений и состояния формы редактирования
   resetValidate(); // Сброс ошибок в форме
   uploadInputElement.value = ''; // Сброс значений поля выбора файла
+  effectsList.addEventListener('change', (destroyEffectSlider()));
 }
