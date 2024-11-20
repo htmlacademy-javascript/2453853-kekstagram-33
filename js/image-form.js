@@ -43,7 +43,7 @@ const setUserFormSubmit = (onSuccess) => {
         .then((response) => {
           if (response.ok) {
             onSuccess();
-            showSuccessAlert('Форма отправлена!')
+            showSuccessAlert('Форма отправлена!');
           } else {
             showDataError('Не все поля формы заполнены!');
           }
