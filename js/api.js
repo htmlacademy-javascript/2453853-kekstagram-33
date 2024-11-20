@@ -1,3 +1,5 @@
+
+/*
 const createLoader = (onSuccess, onError) => () =>
   fetch('https://32.javascript.htmlacademy.pro/kekstagram/data',
     {
@@ -20,4 +22,5 @@ const createLoader = (onSuccess, onError) => () =>
       console.error(err);
     });
 
-export {createLoader};
+export { createLoader };
+*/

@@ -3,6 +3,7 @@ import { configureFormValidation } from './form-validation.js';
 import { changeImageScale, imageUploadPreview } from './image-scale.js';
 import { SCALE_DEFAULT, SCALE_MAX } from './constants.js';
 import { effectsList, initializeEffectSlider, destroyEffectSlider } from './image-effects.js';
+import { showSuccessAlert, showErrorAlert, showDataError } from './alerts.js';
 
 const bodyElement = document.querySelector('body');
 const uploadForm = document.querySelector('.img-upload__form');
@@ -24,16 +25,39 @@ function onDocumentKeydown(evt) {
 
 const { isValidForm, resetValidate } = configureFormValidation(uploadForm, hashtagInputElement, descriptionElement);
 
-// Проверка валидности формы
-uploadForm.addEventListener('submit', (evt) => {
-  if (isValidForm()) {
-    hashtagInputElement.value = getNormalizedStringArray(hashtagInputElement.value);
-    descriptionElement.value = descriptionElement.value.trim();
-    resetValidate();
-  } else {
-    evt.preventDefault();
-  }
-});
+// Проверка валидности формы перед отправкой формы
+const setUserFormSubmit = (onSuccess) => {
+  uploadForm.addEventListener('submit', (evt) => {
+    if (isValidForm()) {
+      hashtagInputElement.value = getNormalizedStringArray(hashtagInputElement.value);
+      descriptionElement.value = descriptionElement.value.trim();
+      resetValidate();
+      const formData = new FormData(evt.target);
+      console.log('Форма валидна');
+      fetch('https://432.javascript.htmlacademy.pro/kekstagram',
+        {
+          method: 'POST',
+          body: formData,
+        },
+      )
+        .then((response) => {
+          if (response.ok) {
+            onSuccess();
+            showSuccessAlert('Форма отправлена!')
+          } else {
+            showDataError('Не все поля формы заполнены!');
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          showErrorAlert('Не удалось отправить форму. Попробуйте ещё раз');
+        });
+    } else {
+      evt.preventDefault();
+      console.log('Форма невалидна');
+    }
+  });
+};
 
 uploadInputElement.addEventListener('change', (evt) => {
   if (evt.target.value) {
@@ -62,3 +86,5 @@ function closeEditingImageForm() {
   uploadInputElement.value = ''; // Сброс значений поля выбора файла
   effectsList.addEventListener('change', (destroyEffectSlider()));
 }
+
+export { setUserFormSubmit, closeEditingImageForm };
