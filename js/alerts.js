@@ -1,4 +1,4 @@
-import { isEscape } from "./util";
+import { isEscape } from './util';
 import { ALERT_SHOW_TIME } from './constants';
 
 function showSuccessAlert() {

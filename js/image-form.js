@@ -33,7 +33,7 @@ const setUserFormSubmit = (onSuccess) => {
       descriptionElement.value = descriptionElement.value.trim();
       resetValidate();
       const formData = new FormData(evt.target);
-      console.log('Форма валидна');
+      // console.log('Форма валидна');
       fetch('https://432.javascript.htmlacademy.pro/kekstagram',
         {
           method: 'POST',
@@ -48,13 +48,13 @@ const setUserFormSubmit = (onSuccess) => {
             showDataError('Не все поля формы заполнены!');
           }
         })
-        .catch((err) => {
-          console.error(err);
+        .catch(() => {
+          // console.error();
           showErrorAlert('Не удалось отправить форму. Попробуйте ещё раз');
         });
     } else {
       evt.preventDefault();
-      console.log('Форма невалидна');
+      // console.log('Форма невалидна');
     }
   });
 };

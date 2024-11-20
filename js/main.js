@@ -21,7 +21,7 @@ const pictureClickHandler = (dataPhoto) => {
 fetch('https://32.javascript.htmlacademy.pro/kekstagram/data')
   .then((response) => response.json())
   .then((data) => {
-    console.log(data);
+    // console.log(data);
     renderPhoto(data, pictureClickHandler);
   });
 
