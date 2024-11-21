@@ -1,42 +1,40 @@
 import { isEscape } from './util';
 import { ALERT_SHOW_TIME } from './constants';
 
-function showSuccessAlert() {
-  const successTemplate = document.querySelector('#success').content;
-  const successElement = successTemplate.cloneNode(true);
-  document.body.append(successElement);
-  const successMessage = document.querySelector('.success');
-  const successInner = document.querySelector('.success__inner');
-  document.querySelector('.success__button').addEventListener('click', onMessageRemove);
+function showAlert(alertType) {
+  const template = document.querySelector(`#${alertType}`).content; // Получаем шаблон в зависимости от типа
+  const alertElement = template.cloneNode(true);
+  document.body.append(alertElement);
+  const alertMessage = document.querySelector(`.${alertType}`);
+  const alertInner = document.querySelector(`.${alertType}__inner`);
+
+  // Настраиваем обработчики событий
+  document.querySelector(`.${alertType}__button`).addEventListener('click', onMessageRemove);
   document.addEventListener('keydown', onEventClose);
   document.addEventListener('click', onEventClose);
+
   function onMessageRemove() {
-    successMessage.remove();
+    alertMessage.remove();
+    removeListeners();
   }
   function onEventClose(evt) {
-    if (isEscape(evt) || !successInner.contains(evt.target)) {
+    if (isEscape(evt) || !alertInner.contains(evt.target)) {
       onMessageRemove();
     }
+  }
+  // Убираем слушатели событий после удаления сообщения
+  function removeListeners() {
+    document.removeEventListener('keydown', onEventClose);
+    document.removeEventListener('click', onEventClose);
   }
 }
 
+function showSuccessAlert() {
+  showAlert('success');
+}
+
 function showErrorAlert() {
-  const errorTemplate = document.querySelector('#error').content;
-  const errorElement = errorTemplate.cloneNode(true);
-  document.body.append(errorElement);
-  const errorMessage = document.querySelector('.error');
-  const errorInner = document.querySelector('.error__inner');
-  document.querySelector('.error__button').addEventListener('click', onMessageRemove);
-  document.addEventListener('keydown', onEventClose);
-  document.addEventListener('click', onEventClose);
-  function onMessageRemove() {
-    errorMessage.remove();
-  }
-  function onEventClose(evt) {
-    if (isEscape(evt) || !errorInner.contains(evt.target)) {
-      onMessageRemove();
-    }
-  }
+  showAlert('error');
 }
 
 function showDataError() {

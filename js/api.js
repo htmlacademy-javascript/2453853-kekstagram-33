@@ -1,26 +1,39 @@
+import { showSuccessAlert, showDataError } from './alerts.js';
+import {BASE_URL} from './constants.js';
 
-/*
-const createLoader = (onSuccess, onError) => () =>
-  fetch('https://32.javascript.htmlacademy.pro/kekstagram/data',
+const Route = {
+  GET_DATA: '/data',
+  SEND_DATA: ''
+};
+
+const getData = (onSuccess) => {
+  fetch(`${BASE_URL}${Route.GET_DATA}`)
+    .then((response) => response.json())
+    .then((data) => {
+      onSuccess(data);
+    });
+};
+
+const sendData = (onSuccess, onFail, body) => {
+  fetch(`${BASE_URL}${Route.SEND_DATA}`,
     {
-      method: 'GET',
-      credentials: 'same-origin',
-      // body: new FormData(),
+      method: 'POST',
+      body,
     },
   )
     .then((response) => {
       if (response.ok) {
-        console.log(response.status);
-        return response.json();
+        onSuccess();
+        showSuccessAlert();
+      } else {
+        onFail();
+        throw new Error('Данные не валидны');
       }
-      throw new Error(`${response.status} ${response.statusText}`);
     })
-    .then((data) => {
-      console.log('Результат', data);
-    })
-    .catch((err) => {
-      console.error(err);
+    .catch(() => {
+      onFail();
+      showDataError();
     });
+};
 
-export { createLoader };
-*/
+export { getData, sendData };
