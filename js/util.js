@@ -13,7 +13,7 @@ const getRandomNumber = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-// фукция генерации случайного элемента
+// функция генерации случайного элемента
 const getRandomElement = (elements) =>
   elements[getRandomNumber(elements.length - 1, 0)];
 
@@ -21,6 +21,15 @@ const getPhotoId = getSequentNumber();
 const getCommentId = getSequentNumber();
 
 const isEscape = (evt) => evt.key === 'Escape';
+
+// функция генерации случайных элементов массива
+const sortArrayRandom = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+};
 
 // фукнция создания из строки массива элементов
 const getNormalizedStringArray = (string) => string
@@ -30,4 +39,24 @@ const getNormalizedStringArray = (string) => string
   .replace(/\s+/g, ' ') // заменяем символ запятой (\s+) на пробел
   .split(' '); // разделяем на массив
 
-export { getRandomNumber, getRandomElement, getPhotoId, getCommentId, isEscape, getNormalizedStringArray };
+// 	Функция debounce для устранения дребезга
+function debounce(callback, timeoutDelay = 500) {
+  // Используем замыкания, чтобы id таймаута у нас навсегда приклеился
+  // к возвращаемой функции с setTimeout, тогда мы его сможем перезаписывать
+  let timeoutId;
+
+  return (...rest) => {
+    // Перед каждым новым вызовом удаляем предыдущий таймаут,
+    // чтобы они не накапливались
+    clearTimeout(timeoutId);
+
+    // Затем устанавливаем новый таймаут с вызовом колбэка на ту же задержку
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+
+    // Таким образом цикл «поставить таймаут - удалить таймаут» будет выполняться,
+    // пока действие совершается чаще, чем переданная задержка timeoutDelay
+  };
+}
+
+
+export { getRandomNumber, getRandomElement, getPhotoId, getCommentId, isEscape, getNormalizedStringArray, sortArrayRandom, debounce };
