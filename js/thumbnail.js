@@ -1,7 +1,8 @@
 const thumbnailTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');
-const userPhotos = document.querySelector('.pictures');
+const picturesContainer = document.querySelector('.pictures');
+const photoListFragment = document.createDocumentFragment();
 
 const createThumbnail = ({ url, description, likes, comments }, pictureClickHandler) => {
   // делаем глубокое клонирование каждой миниатюры
@@ -17,8 +18,11 @@ const createThumbnail = ({ url, description, likes, comments }, pictureClickHand
 };
 
 const renderPhoto = (similarPhoto, pictureClickHandler) => {
-  const photoListFragment = document.createDocumentFragment();
-
+  let image = picturesContainer.querySelector('.picture');
+  while(image) {
+    image.remove();
+    image = picturesContainer.querySelector('.picture');
+  }
   similarPhoto.forEach((picture) => {
     // для каждого объекта массива создаем разметку
     const newThumbnail = createThumbnail(picture, pictureClickHandler);
@@ -26,7 +30,7 @@ const renderPhoto = (similarPhoto, pictureClickHandler) => {
     photoListFragment.append(newThumbnail);
   });
   // добавляет разметку в DOM
-  userPhotos.append(photoListFragment);
+  picturesContainer.append(photoListFragment);
 };
 
 export { renderPhoto };
