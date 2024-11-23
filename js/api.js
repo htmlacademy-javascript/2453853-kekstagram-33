@@ -1,9 +1,9 @@
 import { showSuccessAlert, showDataError } from './alerts.js';
-import {BASE_URL} from './constants.js';
+import { BASE_URL } from './constants.js';
 
 const Route = {
   GET_DATA: '/data',
-  SEND_DATA: ''
+  SEND_DATA: '/'
 };
 
 const getData = (onSuccess) => {
