@@ -17,11 +17,9 @@ const submitButton = document.querySelector('.img-upload__submit');
 
 // Функция для закрытия окна загрузки клавишей Escape
 function onDocumentKeydown(evt) {
-  if (isEscape(evt)) {
+  if (isEscape(evt) && ![hashtagInputElement, descriptionElement].includes(document.activeElement)) {
     evt.preventDefault();
-    if (![hashtagInputElement, descriptionElement].includes(document.activeElement)) {
-      closeEditingImageForm();
-    }
+    closeEditingImageForm();
   }
 }
 
@@ -40,6 +38,7 @@ const setUserFormSubmit = (onSuccess) => {
         () => {
           onSuccess();
           submitButton.disable = false;
+          // closeEditingImageForm();
         },
         () => {
           showDataError();
@@ -53,7 +52,6 @@ const setUserFormSubmit = (onSuccess) => {
     }
   });
 };
-
 
 uploadInputElement.addEventListener('change', (evt) => {
   if (evt.target.value) {
@@ -81,7 +79,7 @@ function closeEditingImageForm() {
   uploadForm.reset(); // Сброс значений и состояния формы редактирования
   resetValidate(); // Сброс ошибок в форме
   uploadInputElement.value = ''; // Сброс значений поля выбора файла
-  effectsList.addEventListener('change', (destroyEffectSlider()));
+  effectsList.removeEventListener('change', (destroyEffectSlider()));
 }
 
 export { setUserFormSubmit, closeEditingImageForm };
