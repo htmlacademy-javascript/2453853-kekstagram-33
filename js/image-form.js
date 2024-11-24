@@ -2,7 +2,7 @@ import { isEscape, getNormalizedStringArray, openSomeModal, closeSomeModal } fro
 import { textValidator, configureFormValidation } from './form-validation.js';
 import { changeImageScale, imageUploadPreview } from './image-scale.js';
 import { SCALE_DEFAULT, SCALE_MAX, FILE_TYPES } from './constants.js';
-import { effectsList, initializeEffectSlider, destroyEffectSlider, effectSliderContainer } from './image-effects.js';
+import { initializeEffectSlider, destroyEffectSlider, effectSliderContainer } from './image-effects.js';
 import { openSuccessSendMessage, openErrorSendMessage, openDataError } from './alerts.js';
 import { sendData } from './api.js';
 
@@ -62,7 +62,7 @@ imageUpload.addEventListener('change', () => {
 imageEditingFormCloseElement.addEventListener('click', () => {
   closeImageUploadOverlay();
   resetImageForm(uploadForm, textValidator);
-  effectsList.removeEventListener('change', (destroyEffectSlider()));
+  destroyEffectSlider();
   resetValidate();
 });
 
@@ -97,35 +97,3 @@ uploadForm.addEventListener('submit', (evt) => {
     openDataError();
   }
 });
-
-/*
-uploadInputElement.addEventListener('change', (evt) => {
-  if (evt.target.value) {
-    openEditionImageForm();
-  }
-});
-
-
-// Функция для открытия окна загрузки
-function openEditionImageForm() {
-  imageEditionFormElement.classList.remove('hidden');
-  bodyElement.classList.add('modal-open');
-  changeImageScale(SCALE_MAX);
-  // changeImageScale, imageUploadPreview дублирование задач, определиться какую задачу убрать
-  imageUploadPreview.style.transform = `scale(${SCALE_DEFAULT})`;
-  effectsList.addEventListener('change', (initializeEffectSlider()));
-  document.addEventListener('keydown', onDocumentKeydown);
-  imageEditingFormCloseElement.addEventListener('click', closeEditingImageForm);
-}
-
-// Функция для закрытия окна формы
-function closeEditingImageForm() {
-  bodyElement.classList.remove('modal-open');
-  imageEditionFormElement.classList.add('hidden');
-  document.removeEventListener('keydown', onDocumentKeydown);
-  uploadForm.reset(); // Сброс значений и состояния формы редактирования
-  resetValidate(); // Сброс ошибок в форме
-  uploadInputElement.value = ''; // Сброс значений поля выбора файла
-  effectsList.removeEventListener('change', (destroyEffectSlider()));
-}
-*/

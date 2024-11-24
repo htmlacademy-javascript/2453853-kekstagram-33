@@ -5,7 +5,6 @@ const effectSliderContainer = document.querySelector('.img-upload__effect-level'
 const levelEffectInput = effectSliderContainer.querySelector('.effect-level__value');
 const effectSlider = effectSliderContainer.querySelector('.effect-level__slider');
 const effectsList = document.querySelector('.effects__list');
-const effectOriginal = document.querySelector('#effect-none');
 
 const EffectConfig = {
   chrome: {
@@ -88,20 +87,18 @@ function onEffectClick(evt) {
 function initializeEffectSlider() {
   effectSliderContainer.classList.add('hidden');
   effectsList.addEventListener('click', onEffectClick);
-  noUiSlider.create(effectSlider, initialSliderOptions);
+
+  // Проверяем, был ли уже инициализирован слайдер
+  if (!effectSlider.noUiSlider) {
+    noUiSlider.create(effectSlider, initialSliderOptions);
+  }
 }
 
 // Функция очистки от слайдера
 function destroyEffectSlider() {
-  effectSlider.noUiSlider.destroy();
+  if (effectSlider.noUiSlider) {
+    effectSlider.noUiSlider.destroy();
+  }
 }
 
-effectOriginal.addEventListener('change', (evt) => {
-  if (evt.target.checked) {
-    imageUploadPreview.style.filter = 'none';
-    effectSliderContainer.classList.add('hidden');
-    levelEffectInput.value = '';
-  }
-});
-
-export { effectsList, initializeEffectSlider, destroyEffectSlider, effectSliderContainer };
+export { effectsList, resetEffect, initializeEffectSlider, destroyEffectSlider, effectSliderContainer };
