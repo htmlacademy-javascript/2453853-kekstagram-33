@@ -14,26 +14,21 @@ const getData = (onSuccess) => {
     });
 };
 
-const sendData = (onSuccess, onFail, body) => {
-  fetch(`${BASE_URL}${Route.SEND_DATA}`,
-    {
-      method: 'POST',
-      body,
-    },
-  )
+const sendData = (body) =>
+  fetch(`${BASE_URL}${Route.SEND_DATA}`, {
+    method: 'POST',
+    body,
+  })
     .then((response) => {
       if (response.ok) {
-        onSuccess();
-        showSuccessAlert();
+        showSuccessAlert(); // Показываем успешное сообщение, если нужно
+        return response; // Возвращаем ответ для дальнейшей обработки, если нужно
       } else {
-        onFail();
-        throw new Error('Данные не валидны');
+        throw new Error('Данные не валидны'); // Если ответ не успешный, выбрасываем ошибку
       }
     })
     .catch(() => {
-      onFail();
-      showDataError();
+      showDataError(); // Обработка ошибки
     });
-};
 
 export { getData, sendData };

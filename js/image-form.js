@@ -29,25 +29,29 @@ const { isValidForm, resetValidate } = configureFormValidation(uploadForm, hasht
 const setUserFormSubmit = (onSuccess) => {
   uploadForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
+
     if (isValidForm()) {
+      // Нормализация и обрезка данных хештегов и описаний
       hashtagInputElement.value = getNormalizedStringArray(hashtagInputElement.value);
       descriptionElement.value = descriptionElement.value.trim();
       resetValidate();
-      submitButton.disable = true;
-      sendData(
-        () => {
+      submitButton.disabled = true;
+
+      sendData(new FormData(evt.target))
+        .then(() => {
+          // Успешная обработка
           onSuccess();
-          submitButton.disable = false;
-          // closeEditingImageForm();
-        },
-        () => {
+        })
+        .catch(() => {
+          // Обработка ошибки
           showDataError();
-          submitButton.disable = false;
-        },
-        new FormData(evt.target),
-      );
+        })
+        .finally(() => {
+          // Восстановление состояния кнопки
+          submitButton.disabled = false;
+        });
     } else {
-      evt.preventDefault();
+      // Если форма не валидна, показываем сообщение об ошибке
       showDataError();
     }
   });
