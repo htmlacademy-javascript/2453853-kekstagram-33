@@ -8,7 +8,6 @@ const successButton = successSendMessageTemp.content.querySelector('.success__bu
 const errorSendMessageTemp = document.querySelector('#error');
 const errorSendMessage = errorSendMessageTemp.content.querySelector('.error');
 const errorButton = errorSendMessageTemp.content.querySelector('.error__button');
-const dataErrorTemp = document.querySelector('#data-error').content;
 const dataErrorMessage = document.querySelector('.data-error');
 
 const onMessageKeyClick = (currentElement, onClose) => (evt) => {
@@ -61,7 +60,7 @@ const openErrorSendMessage = (onClose) => {
 };
 
 const openDataError = () => {
-  document.body.append(dataErrorTemp);
+  document.body.append(dataErrorMessage);
 
   setTimeout(() => {
     dataErrorMessage.remove();

@@ -1,4 +1,4 @@
-import { openSuccessSendMessage, openDataError } from './alerts.js';
+import { openSuccessSendMessage } from './alerts.js';
 import { BASE_URL } from './constants.js';
 
 const Route = {
@@ -14,6 +14,7 @@ const getData = (onSuccess) => {
     });
 };
 
+
 const sendData = (body) =>
   fetch(`${BASE_URL}${Route.SEND_DATA}`, {
     method: 'POST',
@@ -26,9 +27,6 @@ const sendData = (body) =>
       } else {
         throw new Error('Данные не валидны'); // Если ответ не успешный, выбрасываем ошибку
       }
-    })
-    .catch(() => {
-      openDataError(); // Обработка ошибки
     });
 
 export { getData, sendData };

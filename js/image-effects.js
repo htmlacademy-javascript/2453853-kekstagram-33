@@ -5,6 +5,7 @@ const effectSliderContainer = document.querySelector('.img-upload__effect-level'
 const levelEffectInput = effectSliderContainer.querySelector('.effect-level__value');
 const effectSlider = effectSliderContainer.querySelector('.effect-level__slider');
 const effectsList = document.querySelector('.effects__list');
+const effectOriginal = document.querySelector('#effect-none');
 
 const EffectConfig = {
   chrome: {
@@ -47,7 +48,7 @@ function resetEffect() {
 }
 
 // Функция настройки слайдера под действием пользователя
-function setEffect ({ style, unit, sliderOptions }) {
+function setEffect({ style, unit, sliderOptions }) {
   effectSlider.noUiSlider.updateOptions({
     range: {
       min: sliderOptions?.min, // используем optional chaining `?.` для безопасного обращения к свойству
@@ -95,4 +96,12 @@ function destroyEffectSlider() {
   effectSlider.noUiSlider.destroy();
 }
 
-export { effectsList, initializeEffectSlider, destroyEffectSlider};
+effectOriginal.addEventListener('change', (evt) => {
+  if (evt.target.checked) {
+    imageUploadPreview.style.filter = 'none';
+    effectSliderContainer.classList.add('hidden');
+    levelEffectInput.value = '';
+  }
+});
+
+export { effectsList, initializeEffectSlider, destroyEffectSlider, effectSliderContainer };

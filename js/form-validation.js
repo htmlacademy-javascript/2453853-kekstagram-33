@@ -1,6 +1,15 @@
 import { getNormalizedStringArray } from './util.js';
 import { COMMENTS_LENGTH_MAX, MAX_HASHTAGS } from './constants.js';
 
+const uploadForm = document.querySelector('.img-upload__form');
+
+//Создание валидатора формы
+const textValidator = new Pristine(uploadForm, {
+  classTo: 'img-upload__field-wrapper',
+  errorTextParent: 'img-upload__field-wrapper',
+  errorTextClass: 'img-upload__field-wrapper--error'
+});
+
 // валидация хештегов регулярным выражением
 const hashtagRegex = /^#[a-zа-яё0-9]{1,19}$/i;
 
@@ -21,7 +30,7 @@ const incorrectHashtagData = {
 function isValidTextHashtag(value) {
   // проверка пустого значания
   if (!value) {
-    return true;
+    return true; // Считаем пустое значение валидным
   }
 
   const hashtags = getNormalizedStringArray(value);
@@ -74,13 +83,7 @@ function validateHashtagDuplicate(value) {
 // Функция проверки длины комментария
 const validateDescriptionLength = (value) => COMMENTS_LENGTH_MAX >= value.length;
 
-function configureFormValidation(uploadForm, hashtagInput, descriptionInput) {
-  const textValidator = new Pristine(uploadForm, {
-    classTo: 'img-upload__field-wrapper',
-    errorTextParent: 'img-upload__field-wrapper',
-    errorTextClass: 'img-upload__field-wrapper--error'
-  });
-
+function configureFormValidation(uploadFormElement, hashtagInput, descriptionInput) {
   textValidator.addValidator(hashtagInput, isValidTextHashtag, getErrorSyntaxMessage);
   textValidator.addValidator(hashtagInput, validateHashtagCount, ErrorMessage.HASHTAG_COUNT);
   textValidator.addValidator(hashtagInput, validateHashtagDuplicate, ErrorMessage.DUPLICATE_HASHTAGS);
@@ -92,4 +95,4 @@ function configureFormValidation(uploadForm, hashtagInput, descriptionInput) {
   };
 }
 
-export { configureFormValidation };
+export { textValidator, configureFormValidation };
