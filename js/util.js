@@ -1,3 +1,5 @@
+import { DEBOUNCE_IMAGES_DELAY } from './constants';
+
 // создание уникального идентификатора ID, искользуем корирование, замыкаемся на счетчики и вызываем эту функцию
 const getSequentNumber = () => {
   let lastNumber = 0;
@@ -52,7 +54,7 @@ const getNormalizedStringArray = (string) => string
   .split(' '); // разделяем на массив
 
 // 	Функция debounce для устранения дребезга
-function debounce(callback, timeoutDelay = 500) {
+function debounce(callback, timeoutDelay = DEBOUNCE_IMAGES_DELAY) {
   // Используем замыкания, чтобы id таймаута у нас навсегда приклеился
   // к возвращаемой функции с setTimeout, тогда мы его сможем перезаписывать
   let timeoutId;
