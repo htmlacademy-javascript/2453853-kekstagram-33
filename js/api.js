@@ -6,14 +6,21 @@ const Route = {
   SEND_DATA: '/'
 };
 
-const getData = (onSuccess) => {
+const getData = () => new Promise((resolve, reject) => {
   fetch(`${BASE_URL}${Route.GET_DATA}`)
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
     .then((data) => {
-      onSuccess(data);
+      resolve(data);
+    })
+    .catch((error) => {
+      reject(error);
     });
-};
-
+});
 
 const sendData = (body) =>
   fetch(`${BASE_URL}${Route.SEND_DATA}`, {
@@ -22,8 +29,8 @@ const sendData = (body) =>
   })
     .then((response) => {
       if (response.ok) {
-        openSuccessSendMessage(); // Показываем успешное сообщение, если нужно
-        return response; // Возвращаем ответ для дальнейшей обработки, если нужно
+        openSuccessSendMessage(); // Показываем успешное сообщение
+        return response; // Возвращаем ответ для дальнейшей обработки
       } else {
         throw new Error('Данные не валидны'); // Если ответ не успешный, выбрасываем ошибку
       }

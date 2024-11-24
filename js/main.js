@@ -7,17 +7,18 @@ import './image-scale.js';
 import { getData } from './api.js';
 import { imageFilters } from './image-filter.js';
 import { sortPictures } from './sort-pictures.js';
-// import './load-file.js';
-// import { openDataError } from './alerts.js';
+import { openDataError } from './alerts.js';
 
 const pictureClickHandler = (dataPhoto) => {
   openBigPicture(dataPhoto);
 };
 
-getData((data) => {
-  renderPhoto(data, pictureClickHandler);
-  sortPictures(data, pictureClickHandler);
-  imageFilters.classList.remove('img-filters--inactive');
-});
-
-// setUserFormSubmit(closeEditingImageForm);
+getData()
+  .then((data) => {
+    renderPhoto(data, pictureClickHandler);
+    sortPictures(data, pictureClickHandler);
+    imageFilters.classList.remove('img-filters--inactive');
+  })
+  .catch(() => {
+    openDataError();
+  });
