@@ -1,4 +1,4 @@
-import { showSuccessAlert, showDataError } from './alerts.js';
+import { openSuccessSendMessage, openDataError } from './alerts.js';
 import { BASE_URL } from './constants.js';
 
 const Route = {
@@ -21,14 +21,14 @@ const sendData = (body) =>
   })
     .then((response) => {
       if (response.ok) {
-        showSuccessAlert(); // Показываем успешное сообщение, если нужно
+        openSuccessSendMessage(); // Показываем успешное сообщение, если нужно
         return response; // Возвращаем ответ для дальнейшей обработки, если нужно
       } else {
         throw new Error('Данные не валидны'); // Если ответ не успешный, выбрасываем ошибку
       }
     })
     .catch(() => {
-      showDataError(); // Обработка ошибки
+      openDataError(); // Обработка ошибки
     });
 
 export { getData, sendData };

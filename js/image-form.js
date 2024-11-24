@@ -1,9 +1,9 @@
-import { isEscape, getNormalizedStringArray } from './util';
+import { isEscape, getNormalizedStringArray, openSomeModal, closeSomeModal } from './util';
 import { configureFormValidation } from './form-validation.js';
 import { changeImageScale, imageUploadPreview } from './image-scale.js';
 import { SCALE_DEFAULT, SCALE_MAX } from './constants.js';
 import { effectsList, initializeEffectSlider, destroyEffectSlider } from './image-effects.js';
-import { showDataError } from './alerts.js';
+import { openSuccessSendMessage, openErrorSendMessage, openDataError } from './alerts.js';
 import { sendData } from './api.js';
 
 const bodyElement = document.querySelector('body');
@@ -25,6 +25,14 @@ function onDocumentKeydown(evt) {
 
 const { isValidForm, resetValidate } = configureFormValidation(uploadForm, hashtagInputElement, descriptionElement);
 
+const openImageUploadOverlay = () => {
+  openSomeModal(imageEditionFormElement, onDocumentKeydown);
+};
+
+function closeImageUploadOverlay() {
+  closeSomeModal(imageEditionFormElement, onDocumentKeydown);
+}
+
 // Проверка валидности формы перед отправкой формы
 const setUserFormSubmit = (onSuccess) => {
   uploadForm.addEventListener('submit', (evt) => {
@@ -41,18 +49,20 @@ const setUserFormSubmit = (onSuccess) => {
         .then(() => {
           // Успешная обработка
           onSuccess();
+          openSuccessSendMessage();
         })
         .catch(() => {
           // Обработка ошибки
-          showDataError();
+          openErrorSendMessage(openImageUploadOverlay);
         })
         .finally(() => {
+          closeImageUploadOverlay();
           // Восстановление состояния кнопки
           submitButton.disabled = false;
         });
     } else {
       // Если форма не валидна, показываем сообщение об ошибке
-      showDataError();
+      openDataError();
     }
   });
 };
