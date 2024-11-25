@@ -7,10 +7,10 @@ const sortArrayByComments = (a, b) => b.comments.length - a.comments.length;
 
 const sortPictures = (pictures, onPictureClick) => {
   const sortImagesCallback = (filterType) => {
-    let sortingPictures = pictures;
+    let sortingPictures = [...pictures]; // делаем копию массива spead оператором
     switch (filterType) {
       case 'filter-random':
-        sortingPictures = sortArrayRandom(pictures).slice(0, PHOTOS_RANDOM);
+        sortingPictures = sortArrayRandom([...pictures]).slice(0, PHOTOS_RANDOM);
         break;
       case 'filter-discussed':
         sortingPictures = pictures.slice().sort(sortArrayByComments);

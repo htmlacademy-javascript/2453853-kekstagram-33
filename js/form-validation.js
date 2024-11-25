@@ -50,7 +50,7 @@ function getErrorSyntaxMessage() {
   if (incorrectHashtagData['invalid'].length === 1) {
     return 'Введен невалидный  хэштег';
   } else if (incorrectHashtagData['invalid'].length > 1) {
-    return 'Введены невалидные хэштеги';
+    return 'Введен невалидный хэштег';
   }
   return ''; // Возвращаем пустую строку, если валидные
 }
