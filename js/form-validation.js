@@ -17,6 +17,7 @@ const hashtagRegex = /^#[a-zа-яё0-9]{1,19}$/i;
 const ErrorMessage = {
   HASHTAG_COUNT: `Количество хэштегов не должно быть более ${MAX_HASHTAGS}`,
   DUPLICATE_HASHTAGS: 'Хэштеги не должны повторяться',
+  INVALID_HASHTAG: 'Введён невалидный хэштег',
   MAX_LENGTH_COMMENTS: `Длина комментария не должна превышать ${COMMENTS_LENGTH_MAX}`
 };
 
@@ -44,15 +45,6 @@ function isValidTextHashtag(value) {
   });
 
   return !incorrectHashtagData['invalid'].length;
-}
-
-function getErrorSyntaxMessage() {
-  if (incorrectHashtagData['invalid'].length === 1) {
-    return 'Введен невалидный  хэштег';
-  } else if (incorrectHashtagData['invalid'].length > 1) {
-    return 'Введен невалидный хэштег';
-  }
-  return ''; // Возвращаем пустую строку, если валидные
 }
 
 // Функция подсчета валидных тегов
@@ -84,7 +76,7 @@ function validateHashtagDuplicate(value) {
 const validateDescriptionLength = (value) => COMMENTS_LENGTH_MAX >= value.length;
 
 function configureFormValidation(hashtagInput, descriptionInput) {
-  textValidator.addValidator(hashtagInput, isValidTextHashtag, getErrorSyntaxMessage);
+  textValidator.addValidator(hashtagInput, isValidTextHashtag, ErrorMessage.INVALID_HASHTAG);
   textValidator.addValidator(hashtagInput, validateHashtagCount, ErrorMessage.HASHTAG_COUNT);
   textValidator.addValidator(hashtagInput, validateHashtagDuplicate, ErrorMessage.DUPLICATE_HASHTAGS);
   textValidator.addValidator(descriptionInput, validateDescriptionLength, ErrorMessage.MAX_LENGTH_COMMENTS);
