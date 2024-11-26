@@ -16,6 +16,7 @@ const descriptionElement = imageEditionFormElement.querySelector('[name="descrip
 const submitButton = document.querySelector('.img-upload__submit');
 const effectOriginal = document.querySelector('#effect-none');
 const imagePreview = document.querySelector('.img-upload__preview img');
+const effectsPreviews = document.querySelectorAll('.effects__preview');
 
 const { isValidForm, resetValidate } = configureFormValidation(hashtagInputElement, descriptionElement);
 
@@ -57,6 +58,10 @@ imageUpload.addEventListener('change', () => {
   if (matches) {
     imagePreview.src = URL.createObjectURL(file);
   }
+
+  effectsPreviews.forEach((effect) => {
+    effect.style.backgroundImage = `url('${imagePreview.src}')`;
+  });
 });
 
 imageEditingFormCloseElement.addEventListener('click', () => {
@@ -71,10 +76,6 @@ uploadForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
 
   if (isValidForm()) {
-    // Нормализация и обрезка данных хештегов и описаний
-    // hashtagInputElement.value = getNormalizedStringArray(hashtagInputElement.value);
-    // descriptionElement.value = descriptionElement.value.trim();
-    resetValidate();
     configureFormValidation(hashtagInputElement, descriptionElement);
     submitButton.disabled = true;
 
