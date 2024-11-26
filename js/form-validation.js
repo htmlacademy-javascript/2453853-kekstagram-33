@@ -1,6 +1,15 @@
 import { getNormalizedStringArray } from './util.js';
 import { COMMENTS_LENGTH_MAX, MAX_HASHTAGS } from './constants.js';
 
+const uploadForm = document.querySelector('.img-upload__form');
+
+//Создание валидатора формы
+const textValidator = new Pristine(uploadForm, {
+  classTo: 'img-upload__field-wrapper',
+  errorTextParent: 'img-upload__field-wrapper',
+  errorTextClass: 'img-upload__field-wrapper--error'
+});
+
 // валидация хештегов регулярным выражением
 const hashtagRegex = /^#[a-zа-яё0-9]{1,19}$/i;
 
@@ -8,6 +17,7 @@ const hashtagRegex = /^#[a-zа-яё0-9]{1,19}$/i;
 const ErrorMessage = {
   HASHTAG_COUNT: `Количество хэштегов не должно быть более ${MAX_HASHTAGS}`,
   DUPLICATE_HASHTAGS: 'Хэштеги не должны повторяться',
+  INVALID_HASHTAG: 'Введён невалидный хэштег',
   MAX_LENGTH_COMMENTS: `Длина комментария не должна превышать ${COMMENTS_LENGTH_MAX}`
 };
 
@@ -21,7 +31,7 @@ const incorrectHashtagData = {
 function isValidTextHashtag(value) {
   // проверка пустого значания
   if (!value) {
-    return true;
+    return true; // Считаем пустое значение валидным
   }
 
   const hashtags = getNormalizedStringArray(value);
@@ -35,15 +45,6 @@ function isValidTextHashtag(value) {
   });
 
   return !incorrectHashtagData['invalid'].length;
-}
-
-function getErrorSyntaxMessage() {
-  if (incorrectHashtagData['invalid'].length === 1) {
-    return 'Введен невалидный  хэштег';
-  } else if (incorrectHashtagData['invalid'].length > 1) {
-    return 'Введены невалидные хэштеги';
-  }
-  return ''; // Возвращаем пустую строку, если валидные
 }
 
 // Функция подсчета валидных тегов
@@ -74,14 +75,8 @@ function validateHashtagDuplicate(value) {
 // Функция проверки длины комментария
 const validateDescriptionLength = (value) => COMMENTS_LENGTH_MAX >= value.length;
 
-function configureFormValidation(uploadForm, hashtagInput, descriptionInput) {
-  const textValidator = new Pristine(uploadForm, {
-    classTo: 'img-upload__field-wrapper',
-    errorTextParent: 'img-upload__field-wrapper',
-    errorTextClass: 'img-upload__field-wrapper--error'
-  });
-
-  textValidator.addValidator(hashtagInput, isValidTextHashtag, getErrorSyntaxMessage);
+function configureFormValidation(hashtagInput, descriptionInput) {
+  textValidator.addValidator(hashtagInput, isValidTextHashtag, ErrorMessage.INVALID_HASHTAG);
   textValidator.addValidator(hashtagInput, validateHashtagCount, ErrorMessage.HASHTAG_COUNT);
   textValidator.addValidator(hashtagInput, validateHashtagDuplicate, ErrorMessage.DUPLICATE_HASHTAGS);
   textValidator.addValidator(descriptionInput, validateDescriptionLength, ErrorMessage.MAX_LENGTH_COMMENTS);
@@ -92,4 +87,4 @@ function configureFormValidation(uploadForm, hashtagInput, descriptionInput) {
   };
 }
 
-export { configureFormValidation };
+export { textValidator, configureFormValidation };

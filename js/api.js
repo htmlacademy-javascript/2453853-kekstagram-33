@@ -1,39 +1,39 @@
-import { showSuccessAlert, showDataError } from './alerts.js';
-import {BASE_URL} from './constants.js';
+import { openSuccessSendMessage } from './alerts.js';
+import { BASE_URL } from './constants.js';
 
 const Route = {
   GET_DATA: '/data',
-  SEND_DATA: ''
+  SEND_DATA: '/'
 };
 
-const getData = (onSuccess) => {
+const getData = () => new Promise((resolve, reject) => {
   fetch(`${BASE_URL}${Route.GET_DATA}`)
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
     .then((data) => {
-      onSuccess(data);
+      resolve(data);
+    })
+    .catch((error) => {
+      reject(error);
     });
-};
+});
 
-const sendData = (onSuccess, onFail, body) => {
-  fetch(`${BASE_URL}${Route.SEND_DATA}`,
-    {
-      method: 'POST',
-      body,
-    },
-  )
+const sendData = (body) =>
+  fetch(`${BASE_URL}${Route.SEND_DATA}`, {
+    method: 'POST',
+    body,
+  })
     .then((response) => {
       if (response.ok) {
-        onSuccess();
-        showSuccessAlert();
+        openSuccessSendMessage(); // Показываем успешное сообщение
+        return response; // Возвращаем ответ для дальнейшей обработки
       } else {
-        onFail();
-        throw new Error('Данные не валидны');
+        throw new Error('Данные не валидны'); // Если ответ не успешный, выбрасываем ошибку
       }
-    })
-    .catch(() => {
-      onFail();
-      showDataError();
     });
-};
 
 export { getData, sendData };

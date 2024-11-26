@@ -47,7 +47,7 @@ function resetEffect() {
 }
 
 // Функция настройки слайдера под действием пользователя
-function setEffect ({ style, unit, sliderOptions }) {
+function setEffect({ style, unit, sliderOptions }) {
   effectSlider.noUiSlider.updateOptions({
     range: {
       min: sliderOptions?.min, // используем optional chaining `?.` для безопасного обращения к свойству
@@ -87,12 +87,18 @@ function onEffectClick(evt) {
 function initializeEffectSlider() {
   effectSliderContainer.classList.add('hidden');
   effectsList.addEventListener('click', onEffectClick);
-  noUiSlider.create(effectSlider, initialSliderOptions);
+
+  // Проверяем, был ли уже инициализирован слайдер
+  if (!effectSlider.noUiSlider) {
+    noUiSlider.create(effectSlider, initialSliderOptions);
+  }
 }
 
 // Функция очистки от слайдера
 function destroyEffectSlider() {
-  effectSlider.noUiSlider.destroy();
+  if (effectSlider.noUiSlider) {
+    effectSlider.noUiSlider.destroy();
+  }
 }
 
-export { effectsList, initializeEffectSlider, destroyEffectSlider};
+export { effectsList, resetEffect, initializeEffectSlider, destroyEffectSlider, effectSliderContainer };

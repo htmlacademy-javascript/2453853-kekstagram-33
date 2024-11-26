@@ -1,3 +1,5 @@
+import { DEBOUNCE_IMAGES_DELAY } from './constants';
+
 // создание уникального идентификатора ID, искользуем корирование, замыкаемся на счетчики и вызываем эту функцию
 const getSequentNumber = () => {
   let lastNumber = 0;
@@ -22,6 +24,18 @@ const getCommentId = getSequentNumber();
 
 const isEscape = (evt) => evt.key === 'Escape';
 
+const openSomeModal = (currentElement, onEscape) => {
+  currentElement.classList.remove('hidden');
+  document.body.classList.add('modal-open');
+  document.addEventListener('keydown', onEscape);
+};
+
+const closeSomeModal = (currentElement, onEscape) => {
+  currentElement.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+  document.removeEventListener('keydown', onEscape);
+};
+
 // функция генерации случайных элементов массива
 const sortArrayRandom = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
@@ -36,11 +50,11 @@ const getNormalizedStringArray = (string) => string
   .toString() // Приводим к строке
   .toLowerCase() // Приводим к нижнему регистру
   .trim() // обрезка пробелов в начале и конце строки
-  .replace(/\s+/g, ' ') // заменяем символ запятой (\s+) на пробел
+  .replace(/\s+/g, ' ') // заменяем  любой пробельный символ (\s+) на одиночный пробел
   .split(' '); // разделяем на массив
 
 // 	Функция debounce для устранения дребезга
-function debounce(callback, timeoutDelay = 500) {
+function debounce(callback, timeoutDelay = DEBOUNCE_IMAGES_DELAY) {
   // Используем замыкания, чтобы id таймаута у нас навсегда приклеился
   // к возвращаемой функции с setTimeout, тогда мы его сможем перезаписывать
   let timeoutId;
@@ -58,5 +72,4 @@ function debounce(callback, timeoutDelay = 500) {
   };
 }
 
-
-export { getRandomNumber, getRandomElement, getPhotoId, getCommentId, isEscape, getNormalizedStringArray, sortArrayRandom, debounce };
+export { getRandomNumber, getRandomElement, getPhotoId, getCommentId, isEscape, getNormalizedStringArray, sortArrayRandom, debounce, openSomeModal, closeSomeModal };
