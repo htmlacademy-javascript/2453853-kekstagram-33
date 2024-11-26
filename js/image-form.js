@@ -3,7 +3,7 @@ import { textValidator, configureFormValidation } from './form-validation.js';
 import { changeImageScale, imageUploadPreview } from './image-scale.js';
 import { SCALE_DEFAULT, SCALE_MAX, FILE_TYPES } from './constants.js';
 import { initializeEffectSlider, destroyEffectSlider, effectSliderContainer } from './image-effects.js';
-import { openSuccessSendMessage, openErrorSendMessage, openDataError } from './alerts.js';
+import { openSuccessSendMessage, openErrorSendMessage } from './alerts.js';
 import { sendData } from './api.js';
 
 // const bodyElement = document.querySelector('body');
@@ -94,8 +94,5 @@ uploadForm.addEventListener('submit', (evt) => {
         // Восстановление состояния кнопки
         submitButton.disabled = false;
       });
-  } else {
-    // Если форма не валидна, показываем сообщение об ошибке
-    openDataError();
   }
 });
