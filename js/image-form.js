@@ -1,4 +1,4 @@
-import { isEscape, getNormalizedStringArray, openSomeModal, closeSomeModal } from './util';
+import { isEscape, openSomeModal, closeSomeModal } from './util';
 import { textValidator, configureFormValidation } from './form-validation.js';
 import { changeImageScale, imageUploadPreview } from './image-scale.js';
 import { SCALE_DEFAULT, SCALE_MAX, FILE_TYPES } from './constants.js';
@@ -17,7 +17,7 @@ const submitButton = document.querySelector('.img-upload__submit');
 const effectOriginal = document.querySelector('#effect-none');
 const imagePreview = document.querySelector('.img-upload__preview img');
 
-const { isValidForm, resetValidate } = configureFormValidation(uploadForm, hashtagInputElement, descriptionElement);
+const { isValidForm, resetValidate } = configureFormValidation(hashtagInputElement, descriptionElement);
 
 const resetImageForm = (currentForm, currentFormValidator) => {
   currentFormValidator.reset();
@@ -72,9 +72,10 @@ uploadForm.addEventListener('submit', (evt) => {
 
   if (isValidForm()) {
     // Нормализация и обрезка данных хештегов и описаний
-    hashtagInputElement.value = getNormalizedStringArray(hashtagInputElement.value);
-    descriptionElement.value = descriptionElement.value.trim();
-    resetValidate();
+    // hashtagInputElement.value = getNormalizedStringArray(hashtagInputElement.value);
+    // descriptionElement.value = descriptionElement.value.trim();
+    // resetValidate();
+    configureFormValidation(hashtagInputElement, descriptionElement);
     submitButton.disabled = true;
 
     sendData(new FormData(evt.target))

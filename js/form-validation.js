@@ -33,7 +33,7 @@ function isValidTextHashtag(value) {
     return true; // Считаем пустое значение валидным
   }
 
-  const hashtags = getNormalizedStringArray(value);
+  const hashtags = (value);
   incorrectHashtagData['invalid'].length = 0; // очищаем массив, если он был не пустой
 
   // валидация каждого хештега регулярным выражением
@@ -83,7 +83,7 @@ function validateHashtagDuplicate(value) {
 // Функция проверки длины комментария
 const validateDescriptionLength = (value) => COMMENTS_LENGTH_MAX >= value.length;
 
-function configureFormValidation(uploadFormElement, hashtagInput, descriptionInput) {
+function configureFormValidation(hashtagInput, descriptionInput) {
   textValidator.addValidator(hashtagInput, isValidTextHashtag, getErrorSyntaxMessage);
   textValidator.addValidator(hashtagInput, validateHashtagCount, ErrorMessage.HASHTAG_COUNT);
   textValidator.addValidator(hashtagInput, validateHashtagDuplicate, ErrorMessage.DUPLICATE_HASHTAGS);
