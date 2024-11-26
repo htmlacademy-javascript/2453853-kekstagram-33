@@ -74,7 +74,7 @@ uploadForm.addEventListener('submit', (evt) => {
     // Нормализация и обрезка данных хештегов и описаний
     // hashtagInputElement.value = getNormalizedStringArray(hashtagInputElement.value);
     // descriptionElement.value = descriptionElement.value.trim();
-    // resetValidate();
+    resetValidate();
     configureFormValidation(hashtagInputElement, descriptionElement);
     submitButton.disabled = true;
 

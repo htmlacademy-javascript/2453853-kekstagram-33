@@ -33,7 +33,7 @@ function isValidTextHashtag(value) {
     return true; // Считаем пустое значение валидным
   }
 
-  const hashtags = (value);
+  const hashtags = getNormalizedStringArray(value);
   incorrectHashtagData['invalid'].length = 0; // очищаем массив, если он был не пустой
 
   // валидация каждого хештега регулярным выражением
