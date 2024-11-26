@@ -8,7 +8,8 @@ const successButton = successSendMessageTemp.content.querySelector('.success__bu
 const errorSendMessageTemp = document.querySelector('#error');
 const errorSendMessage = errorSendMessageTemp.content.querySelector('.error');
 const errorButton = errorSendMessageTemp.content.querySelector('.error__button');
-const dataErrorMessage = document.querySelector('.data-error');
+const dataErrorTemplate = document.querySelector('#data-error');
+const dataErrorMessage = dataErrorTemplate.content.querySelector('.data-error');
 
 const onMessageKeyClick = (currentElement, onClose) => (evt) => {
   if (isEscape(evt)) {
