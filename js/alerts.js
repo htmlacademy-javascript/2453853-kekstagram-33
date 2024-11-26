@@ -1,50 +1,71 @@
 import { isEscape } from './util';
 import { ALERT_SHOW_TIME } from './constants';
 
-function showAlert(alertType) {
-  const template = document.querySelector(`#${alertType}`).content; // Получаем шаблон в зависимости от типа
-  const alertElement = template.cloneNode(true);
-  document.body.append(alertElement);
-  const alertMessage = document.querySelector(`.${alertType}`);
-  const alertInner = document.querySelector(`.${alertType}__inner`);
 
-  // Настраиваем обработчики событий
-  document.querySelector(`.${alertType}__button`).addEventListener('click', onMessageRemove);
-  document.addEventListener('keydown', onEventClose);
-  document.addEventListener('click', onEventClose);
+const successSendMessageTemp = document.querySelector('#success');
+const successSendMessage = successSendMessageTemp.content.querySelector('.success');
+const successButton = successSendMessageTemp.content.querySelector('.success__button');
+const errorSendMessageTemp = document.querySelector('#error');
+const errorSendMessage = errorSendMessageTemp.content.querySelector('.error');
+const errorButton = errorSendMessageTemp.content.querySelector('.error__button');
+const dataErrorTemplate = document.querySelector('#data-error');
+const dataErrorMessage = dataErrorTemplate.content.querySelector('.data-error');
 
-  function onMessageRemove() {
-    alertMessage.remove();
-    removeListeners();
+const onMessageKeyClick = (currentElement, onClose) => (evt) => {
+  if (isEscape(evt)) {
+    evt.preventDefault();
+    closeMessage(currentElement, onClose);
   }
-  function onEventClose(evt) {
-    if (isEscape(evt) || !alertInner.contains(evt.target)) {
-      onMessageRemove();
-    }
+};
+
+const onAnyFieldClick = (currentElement, onClose) => (evt) => {
+  if (!currentElement.children[0].contains(evt.target)) {
+    closeMessage(currentElement, onClose);
   }
-  // Убираем слушатели событий после удаления сообщения
-  function removeListeners() {
-    document.removeEventListener('keydown', onEventClose);
-    document.removeEventListener('click', onEventClose);
+};
+
+let onMessageKeyClickCallback;
+let onAnyFieldClickCallback;
+
+const openMessage = (currentMessage, onClose) => {
+  onMessageKeyClickCallback = onMessageKeyClick(currentMessage, onClose);
+  onAnyFieldClickCallback = onAnyFieldClick(currentMessage, onClose);
+  document.body.append(currentMessage);
+  document.addEventListener('keydown', onMessageKeyClickCallback);
+  document.addEventListener('click', onAnyFieldClickCallback);
+};
+
+function closeMessage(currentMessage, onClose) {
+  currentMessage.remove();
+  if (onClose !== undefined) {
+    onClose();
   }
+  document.removeEventListener('keydown', onMessageKeyClickCallback);
+  document.removeEventListener('click', onAnyFieldClickCallback);
 }
 
-function showSuccessAlert() {
-  showAlert('success');
-}
+const openSuccessSendMessage = () => {
+  openMessage(successSendMessage);
 
-function showErrorAlert() {
-  showAlert('error');
-}
+  successButton.addEventListener('click', () => {
+    closeMessage(successSendMessage);
+  });
+};
 
-function showDataError() {
-  const dataErrorTemplate = document.querySelector('#data-error').content;
-  const dataErrorElement = dataErrorTemplate.cloneNode(true);
-  document.body.append(dataErrorElement);
-  const dataErrorMessage = document.querySelector('.data-error');
+const openErrorSendMessage = (onClose) => {
+  openMessage(errorSendMessage, onClose);
+
+  errorButton.addEventListener('click', () => {
+    closeMessage(errorSendMessage, onClose);
+  });
+};
+
+const openDataError = () => {
+  document.body.append(dataErrorMessage);
+
   setTimeout(() => {
     dataErrorMessage.remove();
   }, ALERT_SHOW_TIME);
-}
+};
 
-export { showSuccessAlert, showErrorAlert, showDataError };
+export { openSuccessSendMessage, openErrorSendMessage, openDataError };

@@ -4,15 +4,17 @@ const thumbnailTemplate = document.querySelector('#picture')
 const picturesContainer = document.querySelector('.pictures');
 const photoListFragment = document.createDocumentFragment();
 
-const createThumbnail = ({ url, description, likes, comments }, pictureClickHandler) => {
+const createThumbnail = (picture, pictureClickHandler) => {
   // делаем глубокое клонирование каждой миниатюры
   const photoElement = thumbnailTemplate.cloneNode(true);
-  photoElement.querySelector('.picture__img').src = url;
-  photoElement.alt = description;
-  photoElement.querySelector('.picture__comments').comments = comments;
-  photoElement.querySelector('.picture__likes').likes = likes;
+  const pictureInfo = photoElement.querySelector('.picture__info');
+  const pictureImg = photoElement.querySelector('.picture__img');
+  pictureImg.src = picture.url;
+  pictureImg.alt = picture.description;
+  pictureInfo.querySelector('.picture__comments').textContent = picture.comments.length;
+  pictureInfo.querySelector('.picture__likes').textContent = picture.likes;
   photoElement.addEventListener('click', () => {
-    pictureClickHandler({ url, description, likes, comments });
+    pictureClickHandler(picture);
   });
   return photoElement;
 };
