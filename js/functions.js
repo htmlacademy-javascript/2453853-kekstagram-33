@@ -57,3 +57,5 @@ function extraDigit(input) {
   return Number(digits.join(''));
 }
 extraDigit('2023 год');
+
+// нужно сделать модуль 5.16
