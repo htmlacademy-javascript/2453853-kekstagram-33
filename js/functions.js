@@ -1,3 +1,4 @@
+/*
 // Проверка строки на максимальную длину
 const isMaxLength = function (currentString, maxLength) {
   return currentString.lenght <= maxLength;
@@ -58,4 +59,31 @@ function extraDigit(input) {
 }
 extraDigit('2023 год');
 
-// нужно сделать модуль 5.16
+*/
+
+/* 5.16 функции возвращаются */
+const isValidTimeMeeting = (
+  startWorkTime,
+  endWorkTime,
+  startMeetingTime,
+  meetingValues
+) => {
+  const startWorkTimeInMinutes = Number(startWorkTime.split(':')[0]) * 60 + Number(startWorkTime.split(':')[1]);
+  const endWorkTimeInMinutes = Number(endWorkTime.split(':')[0]) * 60 + Number(endWorkTime.split(':')[1]);
+  const startMeetingTimeInMinutes = Number(startMeetingTime.split(':')[0]) * 60 + Number(startMeetingTime.split(':')[1]);
+
+  if (startWorkTimeInMinutes > startMeetingTimeInMinutes) {
+    return false;
+  }
+  if (startMeetingTimeInMinutes + meetingValues > endWorkTimeInMinutes) {
+    return false;
+  }
+
+  return true;
+};
+
+console.log(isValidTimeMeeting('08:00', '17:30', '14:00', 90));
+console.log(isValidTimeMeeting('8:0', '10:0', '8:0', 120));
+console.log(isValidTimeMeeting('08:00', '14:30', '14:00', 90));
+console.log(isValidTimeMeeting('14:00', '17:30', '08:0', 90));
+console.log(isValidTimeMeeting('8:00', '17:30', '08:00', 900));
