@@ -61,7 +61,7 @@ extraDigit('2023 год');
 
 */
 
-/* 5.16 функции возвращаются */
+/* 5.16 функции возвращаются
 const isValidTimeMeeting = (
   startWorkTime,
   endWorkTime,
